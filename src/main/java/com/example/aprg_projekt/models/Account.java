@@ -63,6 +63,23 @@ public class Account {
         this.profile = profile;
     }
 
+    public Account(String email,
+                   String password,
+                   String firstName,
+                   String lastName) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public Account(AccountDTO account) {
+        this.email = account.getEmail();
+        this.password = account.getPassword();
+        this.firstName = account.getFirstName();
+        this.lastName = account.getLastName();
+    }
+
     public UUID getId() {
         return id;
     }
