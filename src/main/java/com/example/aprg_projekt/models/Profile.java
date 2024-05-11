@@ -1,19 +1,12 @@
 package com.example.aprg_projekt.models;
 
-import jakarta.persistence.*;
 
 import java.util.UUID;
 
-@Entity
-@Table(name = "profile")
 public class Profile {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Transient
     private String displayName;
-    @Transient
     private Integer age;
     private String degreeCourse;
     private Integer semester;

@@ -1,28 +1,18 @@
 package com.example.aprg_projekt.models;
 
-import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Entity
-@Table(name = "account")
 public class Account {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Column(nullable = false,
-            unique = true)
     private String email;
-    @Column(nullable = false)
     private String password;
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
     private String gender;
-    @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private Profile profile;
 
     public Account() {
@@ -52,15 +42,13 @@ public class Account {
                    String firstName,
                    String lastName,
                    LocalDate dateOfBirth,
-                   String gender,
-                   Profile profile) {
+                   String gender) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
-        this.profile = profile;
     }
 
     public Account(String email,

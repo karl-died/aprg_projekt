@@ -19,12 +19,13 @@ public class AccountService {
     }
 
     public void registerAccount(AccountDTO account) {
-        Optional<Account> a = accountRepository.findByEmail(account.getEmail());
-        if (a.isPresent()) {
+        boolean a = accountRepository.emailTaken(account.getEmail());
+        if (a) {
             throw new IllegalArgumentException("Email " + account.getEmail() + " is already in use");
         }
 
 
         accountRepository.save(new Account(account));
     }
+
 }
