@@ -74,4 +74,9 @@ public class ProfileRepository {
         }
         return profile.getFirst();
     }
+
+    public List<Profile> getAll() {
+        List<Profile> profiles = jdbcTemplate.query("SELECT * FROM profile", new ProfileRowMapper());
+        return profiles;
+    }
 }

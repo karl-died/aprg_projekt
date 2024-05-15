@@ -28,6 +28,7 @@ public class AccountProfileConfig {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    /*
     @Bean
     CommandLineRunner init(AccountRepository accountRepository,
                            ProfileRepository profileRepository) {
@@ -76,4 +77,6 @@ public class AccountProfileConfig {
 
         };
     }
+
+     */
 }
