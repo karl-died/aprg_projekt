@@ -3,6 +3,8 @@ package com.example.aprg_projekt.repositories;
 import com.example.aprg_projekt.models.Profile;
 import com.example.aprg_projekt.utils.ProfileRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jdbc.repository.query.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -15,68 +17,22 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class ProfileRepository {
+public interface ProfileRepository extends CrudRepository<Profile, UUID> {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    @Query("""
+        SELECT *
+        FROM profile
+        WHERE id = (SELECT id FROM account WHERE email = :email)
+    """)
+    Profile findByEmail(String email);
 
-    public void save(String email, Profile profile) {
-        UUID profileID = UUID.randomUUID();
-        String query = "BEGIN;" +
-                "INSERT INTO profile VALUES (?, ?, ?, ?);" +
-                "UPDATE account SET profileId = ? WHERE email = ?;" +
-                "COMMIT;";
+    @Query("""
+        SELECT *
+        FROM profile
+        WHERE id = (SELECT id FROM account WHERE id = :accountId)
+    """)
+    Profile findByAcountId(UUID accountId);
 
-        jdbcTemplate.update(query,
-                profileID,
-                profile.getDegreeCourse(),
-                profile.getAboutMe(),
-                profile.getSemester(),
-                profileID,
-                email);
-    }
-
-    public Profile findByEmail(String email) {
-        List<UUID> profileId = jdbcTemplate.query("SELECT profileId FROM account WHERE email = ?",
-                new Object[] {email},
-                new RowMapper<UUID>() {
-            @Override
-            public UUID mapRow(ResultSet resultSet, int i) throws SQLException {
-                return UUID.fromString(resultSet.getString("profileId"));
-            }
-        });
-
-        if(profileId.isEmpty()) {
-            throw new NoSuchElementException("Account with email " + email + " not found");
-        }
-        if(profileId.size() > 1) {
-            throw new IllegalStateException("More than one account found for email " + email);
-        }
-        List<Profile> profiles = jdbcTemplate.query("SELECT * FROM profile WHERE id = ?",
-                new Object[] {profileId.getFirst()},
-                new ProfileRowMapper());
-
-        if(profiles.isEmpty()) {
-            throw new NoSuchElementException("Profile attached to the account with email " + email);
-        }
-        if(profiles.size() > 1) {
-            throw new IllegalStateException("More than one profile attached to the account with email " + email);
-        }
-        return profiles.getFirst();
-    }
-
-    public Profile findById(UUID id) {
-        List<Profile> profile = jdbcTemplate.query("SELECT * FROM profile WHERE id = ?",
-                new Object[]{id},
-                new ProfileRowMapper());
-        if(profile.isEmpty()) {
-            throw new NoSuchElementException("Profile with id " + id + " not found");
-        }
-        return profile.getFirst();
-    }
-
-    public List<Profile> getAll() {
-        List<Profile> profiles = jdbcTemplate.query("SELECT * FROM profile", new ProfileRowMapper());
-        return profiles;
-    }
+    @Query("SELECT * FROM profile")
+    List<Profile> getAll();
 }

@@ -1,13 +1,21 @@
 package com.example.aprg_projekt.models;
 
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
+import java.time.LocalDate;
 import java.util.UUID;
 
+@Table("PROFILE")
 public class Profile {
 
+    @Id
     private UUID id;
-    private String displayName;
-    private Integer age;
+    private String firstName;
+    private String lastName;
+    private LocalDate dateOfBirth;
+    private String gender;
     private String degreeCourse;
     private Integer semester;
     private String aboutMe;
@@ -16,16 +24,19 @@ public class Profile {
 
     }
 
-    public Profile(UUID id, String displayName, Integer age, String degreeCourse, Integer semester, String aboutMe) {
-        this.id = id;
-        this.degreeCourse = degreeCourse;
-        this.semester = semester;
-        this.aboutMe = aboutMe;
-    }
-
-    public Profile(String degreeCourse,
+    public Profile(UUID id,
+                   String firstName,
+                   String lastName,
+                   LocalDate dateOfBirth,
+                   String gender,
+                   String degreeCourse,
                    Integer semester,
                    String aboutMe) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
         this.degreeCourse = degreeCourse;
         this.semester = semester;
         this.aboutMe = aboutMe;
@@ -35,12 +46,20 @@ public class Profile {
         return id;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public Integer getAge() {
-        return age;
+    public String getLastName() {
+        return lastName;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public String getGender() {
+        return gender;
     }
 
     public String getDegreeCourse() {
@@ -59,6 +78,22 @@ public class Profile {
         this.id = id;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public void setDegreeCourse(String degreeCourse) {
         this.degreeCourse = degreeCourse;
     }
@@ -75,8 +110,10 @@ public class Profile {
     public String toString() {
         return "Profile{" +
                 "id=" + id +
-                ", displayName='" + displayName + '\'' +
-                ", age=" + age +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", gender='" + gender + '\'' +
                 ", degreeCourse='" + degreeCourse + '\'' +
                 ", semester=" + semester +
                 ", aboutMe='" + aboutMe + '\'' +
