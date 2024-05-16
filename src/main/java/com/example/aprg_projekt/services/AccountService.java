@@ -19,13 +19,24 @@ public class AccountService {
     }
 
     public void registerAccount(AccountDTO account) {
-        boolean a = accountRepository.emailTaken(account.getEmail());
-        if (a) {
+        Account a = accountRepository.findByEmail(account.getEmail());
+        if (a != null) {
             throw new IllegalArgumentException("Email " + account.getEmail() + " is already in use");
         }
 
 
         accountRepository.save(new Account(account));
+    }
+
+    public boolean authenticate(AccountDTO accountDTO) {
+        Account a = accountRepository.findByEmail(accountDTO.getEmail());
+        if(a == null) {
+            return false;
+        }
+        if(a.getPassword().equals(accountDTO.getPassword())) {
+            return true;
+        }
+        return false;
     }
 
 }

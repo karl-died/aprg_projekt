@@ -25,4 +25,9 @@ public class AccountController {
     public void register(@RequestBody AccountDTO account) {
         accountService.registerAccount(account);
     }
+
+    @PostMapping("/login")
+    public String login(@RequestBody AccountDTO account) {
+        return accountService.authenticate(account)? "successful" : "unsuccessful";
+    }
 }
