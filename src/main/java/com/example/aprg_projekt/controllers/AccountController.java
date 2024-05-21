@@ -5,13 +5,11 @@ import com.example.aprg_projekt.models.Account;
 import com.example.aprg_projekt.models.AccountDTO;
 import com.example.aprg_projekt.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "api/v1/account")
+@RequestMapping(path = "/account")
 public class AccountController {
 
     private final AccountService accountService;
@@ -21,13 +19,15 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @PostMapping("/registration")
-    public void register(@RequestBody AccountDTO account) {
+    @PostMapping("/register")
+    public String register(Model model, AccountDTO account) {
+        System.out.println("Account: " + account.toString());
         accountService.registerAccount(account);
+        return "index";
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody AccountDTO account) {
+    public String login(Model model, AccountDTO account) {
         return accountService.authenticate(account)? "successful" : "unsuccessful";
     }
 }

@@ -17,5 +17,5 @@ import java.util.List;
 public interface AccountRepository extends CrudRepository<Account, UUID> {
 
     @Query("SELECT * FROM account WHERE email = :email")
-    public Account findByEmail(String email);
+    Optional<Account> findByEmail(String email);
 }

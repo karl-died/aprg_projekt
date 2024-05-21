@@ -1,0 +1,17 @@
+{{>layout/header}}
+
+<form method="post" action="/account/register">
+    <h2 class="form-signin-heading">Registration</h2>
+    <p>
+        <label for="username">Email</label>
+        <input type="text" id="email" name="email" class="form-control" placeholder="Email" required autofocus>
+    </p>
+    <p>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+    </p>
+    <input name="_csrf" type="hidden" value="vPaY9nrX-5wP9Nrak0MsVrndl09ajnlDdIAadhdxTBTgrZfY2ZKuwEjmz_8ikeO_oG4YYYC4ui45uBhuRbItR3RAfHXVlKK-" />
+    <button type="submit">Register</button>
+</form>
+
+{{>layout/footer}}

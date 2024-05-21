@@ -14,7 +14,12 @@ CREATE TABLE profile (
 CREATE TABLE account (
     id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     email varchar(50) NOT NULL UNIQUE,
-    password varchar(50) NOT NULL,
+    password varchar(100) NOT NULL,
     profileId uuid REFERENCES profile(id) UNIQUE
 );
 
+CREATE TABLE authority (
+    role varchar(100) NOT NULL,
+    account uuid REFERENCES account(id) NOT NULL,
+    PRIMARY KEY (role, account)
+)

@@ -18,22 +18,21 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public void registerAccount(AccountDTO account) {
-        Account a = accountRepository.findByEmail(account.getEmail());
-        if (a != null) {
-            throw new IllegalArgumentException("Email " + account.getEmail() + " is already in use");
+    public void registerAccount(AccountDTO accountDTO) {
+        Optional<Account> a = accountRepository.findByEmail(accountDTO.getEmail());
+        if (!a.isPresent()) {
+            throw new IllegalArgumentException("Email " + accountDTO.getEmail() + " is already in use");
         }
 
-
-        accountRepository.save(new Account(account));
+        accountRepository.save(new Account(accountDTO));
     }
 
     public boolean authenticate(AccountDTO accountDTO) {
-        Account a = accountRepository.findByEmail(accountDTO.getEmail());
-        if(a == null) {
+        Optional<Account> a = accountRepository.findByEmail(accountDTO.getEmail());
+        if(!a.isPresent()) {
             return false;
         }
-        if(a.getPassword().equals(accountDTO.getPassword())) {
+        if(a.get().getPassword().equals(accountDTO.getPassword())) {
             return true;
         }
         return false;

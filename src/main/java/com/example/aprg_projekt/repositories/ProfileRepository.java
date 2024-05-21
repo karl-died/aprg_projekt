@@ -24,15 +24,40 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
         FROM profile
         WHERE id = (SELECT id FROM account WHERE email = :email)
     """)
-    Profile findByEmail(String email);
+    Optional<Profile> findByEmail(String email);
 
     @Query("""
         SELECT *
         FROM profile
         WHERE id = (SELECT id FROM account WHERE id = :accountId)
     """)
-    Profile findByAcountId(UUID accountId);
+    Optional<Profile> findByAcountId(UUID accountId);
 
     @Query("SELECT * FROM profile")
     List<Profile> getAll();
+
+    /*
+    @Query("""
+        BEGIN;
+        INSERT INTO profile (
+             firstName, 
+             lastName, 
+             dateOfBirth,
+             gender,
+             degreeCourse,
+             semester,
+             aboutMe
+        ) VALUES (
+             firstName,
+             lastName, 
+             dateOfBirth,
+             gender,
+             degreeCourse,
+             semester,
+             aboutMe
+             )
+""")
+    void save(String email, Profile profile);
+    */
 }
+
