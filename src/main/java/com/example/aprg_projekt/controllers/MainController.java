@@ -13,6 +13,7 @@ class MainController {
     private static final String AUTHORITIES_KEY = "authorities";
     private static final String EMAIL_KEY = "email";
 
+
     @GetMapping("/")
     String landingPage(Model model, Authentication authentication) {
         if (authentication == null) {

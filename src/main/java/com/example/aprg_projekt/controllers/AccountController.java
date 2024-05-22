@@ -4,12 +4,14 @@ package com.example.aprg_projekt.controllers;
 import com.example.aprg_projekt.models.Account;
 import com.example.aprg_projekt.models.AccountDTO;
 import com.example.aprg_projekt.services.AccountService;
+import com.example.aprg_projekt.utils.Redirect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping(path = "/account")
+@Controller
 public class AccountController {
 
     private final AccountService accountService;
@@ -23,11 +25,6 @@ public class AccountController {
     public String register(Model model, AccountDTO account) {
         System.out.println("Account: " + account.toString());
         accountService.registerAccount(account);
-        return "index";
-    }
-
-    @PostMapping("/login")
-    public String login(Model model, AccountDTO account) {
-        return accountService.authenticate(account)? "successful" : "unsuccessful";
+        return Redirect.to("/");
     }
 }

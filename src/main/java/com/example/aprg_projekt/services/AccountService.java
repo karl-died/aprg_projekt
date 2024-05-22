@@ -4,6 +4,8 @@ import com.example.aprg_projekt.models.Account;
 import com.example.aprg_projekt.models.AccountDTO;
 import com.example.aprg_projekt.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,29 +15,25 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
 
-    @Autowired
-    public AccountService(AccountRepository accountRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+
+    public AccountService(
+            AccountRepository accountRepository,
+            PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void registerAccount(AccountDTO accountDTO) {
         Optional<Account> a = accountRepository.findByEmail(accountDTO.getEmail());
-        if (!a.isPresent()) {
+        if (a.isPresent()) {
             throw new IllegalArgumentException("Email " + accountDTO.getEmail() + " is already in use");
         }
 
-        accountRepository.save(new Account(accountDTO));
+        Account account = new Account();
+        account.setEmail(accountDTO.getEmail());
+        account.setPassword(passwordEncoder.encode(accountDTO.getPassword()));
+        accountRepository.save(account);
     }
-
-    public boolean authenticate(AccountDTO accountDTO) {
-        Optional<Account> a = accountRepository.findByEmail(accountDTO.getEmail());
-        if(!a.isPresent()) {
-            return false;
-        }
-        if(a.get().getPassword().equals(accountDTO.getPassword())) {
-            return true;
-        }
-        return false;
-    }
-
 }
