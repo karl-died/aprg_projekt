@@ -1,0 +1,19 @@
+{{>layout/header}}
+<p><a href="../">Home</a></p>
+
+<h1>Liked Profiles</h1>
+
+{{#profiles}}
+    <h3>{{name}}, {{age}}</h3>
+    <p>{{degreeCourse}}</p>
+    <p>{{semester}}. Semester</p>
+    <h4>About Me:</h4>
+    <p>{{aboutMe}}</p>
+    <br/>
+{{/profiles}}
+
+{{^profiles}}
+    <p>Looks you haven't liked any Profiles yet!</p>
+{{/profiles}}
+
+{{>layout/footer}}

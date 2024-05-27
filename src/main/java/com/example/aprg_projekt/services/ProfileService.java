@@ -22,13 +22,9 @@ public class ProfileService {
     @Autowired
     private AccountRepository accountRepository;
 
-    public List<Profile> getAll() {
-        Iterable<Profile> profiles = profileRepository.getAll();
-        List<Profile> profileList = new ArrayList<>();
-        for (Profile profile : profiles) {
-            profileList.add(profile);
-        }
-        return profileList;
+    public Optional<Profile> getById(UUID id) {
+        Optional<Profile> profile = profileRepository.findById(id);
+        return profile;
     }
 
     public Optional<Profile> getByEmail(String email) {
@@ -97,5 +93,25 @@ public class ProfileService {
 
     public void rate(String email, UUID ratedId, boolean isLike) {
         profileRepository.rate(email, ratedId, isLike);
+    }
+
+    public boolean isAllowedToViewProfile(String email, UUID profileId) {
+        Optional<Account> account = accountRepository.findByEmail(email);
+        if(!account.isPresent()) {
+            throw new IllegalArgumentException("Account not found");
+        }
+        List<Profile> likedProfiles = profileRepository.getLikedProfiles(account.get().getId());
+        Optional<Profile> ownProfile = profileRepository.findByEmail(email);
+        if(!ownProfile.isPresent()) {
+            throw new IllegalArgumentException("Profile not found");
+        }
+
+        for(Profile profile : likedProfiles) {
+            if(profile.getId().equals(profileId) || ownProfile.get().getId().equals(ownProfile.get().getId())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

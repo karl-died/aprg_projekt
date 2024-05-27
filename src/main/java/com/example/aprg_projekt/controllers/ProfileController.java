@@ -1,6 +1,8 @@
 package com.example.aprg_projekt.controllers;
 
+import com.example.aprg_projekt.models.Account;
 import com.example.aprg_projekt.models.Profile;
+import com.example.aprg_projekt.models.ProfileDTO;
 import com.example.aprg_projekt.services.ProfileService;
 import com.example.aprg_projekt.utils.Redirect;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/profile")
@@ -21,11 +25,6 @@ public class ProfileController {
     @Autowired
     public ProfileController(ProfileService profileService) {
         this.profileService = profileService;
-    }
-
-    @GetMapping("/all")
-    public List<Profile> getAll() {
-        return profileService.getAll();
     }
 
     @PostMapping("/save")
@@ -56,5 +55,30 @@ public class ProfileController {
             model.addAttribute("semester", "");
         }
         return "editProfile";
+    }
+
+    @GetMapping("/")
+    public String showProfile(Model model, @RequestParam(name = "profileId") UUID profileId, Authentication authentication) {
+        if(!profileService.isAllowedToViewProfile(authentication.getName(), profileId)) {
+            return Redirect.to("/");
+        }
+        Optional<Profile> profileOptional = profileService.getById(profileId);
+        if(profileOptional.isPresent()) {
+            model.addAttribute("profile", new ProfileDTO(profileOptional.get()));
+        }
+        return "viewProfile";
+    }
+
+    @GetMapping("/likes")
+    public String showLikedProfiles(Model model, Authentication authentication) {
+        if (authentication.getPrincipal() instanceof Account account) {
+            List<Profile> likedProfiles = profileService.getLikedProfiles(account.getEmail());
+            List<ProfileDTO> displayProfiles = new ArrayList<>();
+            for (Profile profile : likedProfiles) {
+                displayProfiles.add(new ProfileDTO(profile));
+            }
+            model.addAttribute("profiles", displayProfiles);
+        }
+        return "likedProfiles";
     }
 }
