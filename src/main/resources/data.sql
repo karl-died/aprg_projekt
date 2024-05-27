@@ -23,3 +23,14 @@ CREATE TABLE authority (
     account uuid REFERENCES account(id) NOT NULL,
     PRIMARY KEY (role, account)
 );
+
+CREATE TABLE r_rating (
+    accountId uuid REFERENCES account(id) NOT NULL,
+    ratedId uuid REFERENCES account(id) NOT NULL,
+    isLike boolean NOT NULL,
+    PRIMARY KEY(accountId, ratedId)
+);
+
+CREATE VIEW account_profile AS
+    SELECT account.id AS accountId, profile.id AS profileId, email, firstName, lastName, dateOfBirth, gender, degreeCourse, aboutMe, semester
+    FROM account LEFT JOIN profile ON account.id = profile.accountId;

@@ -1,0 +1,27 @@
+{{>layout/header}}
+<p><a href="./">Home</a></p>
+
+<h1>Rate Profiles</h1>
+
+{{#profiles}}
+    <h3>{{name}}, {{age}}</h3>
+    <p>{{degreeCourse}}</p>
+    <p>{{semester}}. Semester</p>
+    <h4>About Me:</h4>
+    <p>{{aboutMe}}</p>
+    <form  method="post" action="./rate?profileId={{id}}&isLike=true">
+        <input type="submit" value="Like">
+        {{>snippet/csrfToken}}
+    </form>
+    <form  method="post" action="./rate?profileId={{id}}&isLike=false">
+    <input type="submit" value="Don't Like">
+    {{>snippet/csrfToken}}
+    </form>
+    <br/>
+{{/profiles}}
+
+{{^profiles}}
+    <p>Looks like you've already rated everyone!</p>
+{{/profiles}}
+
+{{>layout/footer}}

@@ -69,7 +69,7 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
               Integer semester,
               String aboutMe);
 
-
+    @Modifying
     @Query("""
         UPDATE profile 
         SET  firstName = :firstName, 
@@ -79,7 +79,7 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
              degreeCourse = :degreeCourse,
              semester = :semester,
              aboutMe = :aboutMe
-        WHERE profileId = (SELECT id FROM account WHERE email = :email);
+        WHERE accountId = (SELECT id FROM account WHERE email = :email);
 """)
     void update(String email,
                 String firstName,
@@ -90,5 +90,49 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
                 Integer semester,
                 String aboutMe);
 
+    @Query("""
+        SELECT *
+        FROM profile
+        WHERE NOT EXISTS (
+            SELECT * 
+            FROM r_rating 
+            WHERE r_rating.accountId = :accountId AND r_rating.ratedId = profile.accountId)
+        AND profile.accountId <> :accountId;
+    """)
+    List<Profile> getNonRatedProfiles(UUID accountId);
+
+    @Query("""
+        SELECT *
+        FROM profile
+        WHERE NOT EXISTS (
+            SELECT * 
+            FROM r_rating 
+            WHERE r_rating.accountId = :accountId AND r_rating.ratedId = profile.accountId)
+        AND profile.accountId <> :accountId
+        LIMIT 1;
+    """)
+    Optional<Profile> getOneNonRatedProfile(UUID accountId);
+
+    @Query("""
+        SELECT *
+        FROM profile
+        WHERE EXISTS (
+            SELECT * 
+            FROM r_rating 
+            WHERE r_rating.accountId = :accountId 
+            AND r_rating.ratedId = profile.accountId
+            AND r_rating.isLike);
+    """)
+    List<Profile> getLikedProfiles(UUID accountId);
+
+    @Modifying
+    @Query("""
+        INSERT INTO r_rating VALUES (
+            (SELECT id FROM account WHERE email = :email), 
+            (SELECT accountId FROM account_profile WHERE profileId = :ratedProfileId), 
+            :isLike
+        );
+    """)
+    void rate(String email, UUID ratedProfileId, boolean isLike);
 }
 

@@ -35,6 +35,7 @@ class AuthorizationConfig {
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/").permitAll() // Make landing page publicly accessible
                 .requestMatchers("/profiles/**").authenticated()
+                .requestMatchers("/rate").authenticated()
                 .anyRequest().authenticated() // Secure any other page (aka blacklist)
         );
 

@@ -3,6 +3,7 @@ package com.example.aprg_projekt.repositories;
 import com.example.aprg_projekt.models.Account;
 import com.example.aprg_projekt.utils.AccountRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,4 +19,8 @@ public interface AccountRepository extends CrudRepository<Account, UUID> {
 
     @Query("SELECT * FROM account WHERE email = :email")
     Optional<Account> findByEmail(String email);
+
+    @Modifying
+    @Query("INSERT INTO r_rating VALUES (:accountId, :ratedId, :isLike);")
+    void setRating(UUID accountId, UUID ratedID, boolean isLike);
 }

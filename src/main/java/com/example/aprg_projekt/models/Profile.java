@@ -50,6 +50,22 @@ public class Profile {
         this.aboutMe = aboutMe;
     }
 
+    public Profile(String firstName,
+                   String lastName,
+                   LocalDate dateOfBirth,
+                   String gender,
+                   String degreeCourse,
+                   Integer semester,
+                   String aboutMe) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.degreeCourse = degreeCourse;
+        this.semester = semester;
+        this.aboutMe = aboutMe;
+    }
+
     public UUID getId() {
         return id;
     }
