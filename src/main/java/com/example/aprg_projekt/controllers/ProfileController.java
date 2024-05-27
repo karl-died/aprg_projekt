@@ -2,17 +2,19 @@ package com.example.aprg_projekt.controllers;
 
 import com.example.aprg_projekt.models.Profile;
 import com.example.aprg_projekt.services.ProfileService;
+import com.example.aprg_projekt.utils.Redirect;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
-@RestController
-@RequestMapping(path = "/profile")
+@Controller
+@RequestMapping("/profile")
 public class ProfileController {
-
 
     private final ProfileService profileService;
 
@@ -21,9 +23,38 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-
-    @GetMapping("/profiles")
+    @GetMapping("/all")
     public List<Profile> getAll() {
         return profileService.getAll();
+    }
+
+    @PostMapping("/save")
+    public String saveProfile(@ModelAttribute Profile profile, Authentication authentication) {
+        profileService.save(authentication.getName(), profile);
+        return Redirect.to("/");
+    }
+
+    @GetMapping("/edit")
+    public String editProfile(Model model, Authentication authentication) {
+        Optional<Profile> profileOptional = profileService.getByEmail(authentication.getName());
+        if(profileOptional.isPresent()) {
+            Profile profile = profileOptional.get();
+            model.addAttribute("firstName", profile.getFirstName());
+            model.addAttribute("lastName", profile.getLastName());
+            model.addAttribute("dateOfBirth", profile.getDateOfBirth());
+            model.addAttribute("gender", profile.getGender());
+            model.addAttribute("degreeCourse", profile.getDegreeCourse());
+            model.addAttribute("aboutMe", profile.getAboutMe());
+            model.addAttribute("semester", profile.getSemester());
+        } else {
+            model.addAttribute("firstName", "");
+            model.addAttribute("lastName", "");
+            model.addAttribute("dateOfBirth", "");
+            model.addAttribute("gender", "");
+            model.addAttribute("degreeCourse", "");
+            model.addAttribute("aboutMe", "");
+            model.addAttribute("semester", "");
+        }
+        return "editProfile";
     }
 }

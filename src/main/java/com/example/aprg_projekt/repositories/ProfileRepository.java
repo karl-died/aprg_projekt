@@ -3,6 +3,7 @@ package com.example.aprg_projekt.repositories;
 import com.example.aprg_projekt.models.Profile;
 import com.example.aprg_projekt.utils.ProfileRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -22,23 +24,22 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
     @Query("""
         SELECT *
         FROM profile
-        WHERE id = (SELECT id FROM account WHERE email = :email)
+        WHERE accountId = (SELECT account.id FROM account WHERE account.email = :email)
     """)
     Optional<Profile> findByEmail(String email);
 
     @Query("""
         SELECT *
         FROM profile
-        WHERE id = (SELECT id FROM account WHERE id = :accountId)
+        WHERE accountId = (SELECT id FROM account WHERE id = :accountId)
     """)
     Optional<Profile> findByAcountId(UUID accountId);
 
     @Query("SELECT * FROM profile")
     List<Profile> getAll();
 
-    /*
+    @Modifying
     @Query("""
-        BEGIN;
         INSERT INTO profile (
              firstName, 
              lastName, 
@@ -46,18 +47,48 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
              gender,
              degreeCourse,
              semester,
-             aboutMe
+             aboutMe,
+             accountId
         ) VALUES (
-             firstName,
-             lastName, 
-             dateOfBirth,
-             gender,
-             degreeCourse,
-             semester,
-             aboutMe
-             )
+             :firstName,
+             :lastName, 
+             :dateOfBirth,
+             :gender,
+             :degreeCourse,
+             :semester,
+             :aboutMe,
+             (SELECT id FROM account WHERE email = :email) 
+        );
 """)
-    void save(String email, Profile profile);
-    */
+    void save(String email,
+              String firstName,
+              String lastName,
+              LocalDate dateOfBirth,
+              String gender,
+              String degreeCourse,
+              Integer semester,
+              String aboutMe);
+
+
+    @Query("""
+        UPDATE profile 
+        SET  firstName = :firstName, 
+             lastName = :lastName, 
+             dateOfBirth = :dateOfBirth,
+             gender = :gender,
+             degreeCourse = :degreeCourse,
+             semester = :semester,
+             aboutMe = :aboutMe
+        WHERE profileId = (SELECT id FROM account WHERE email = :email);
+""")
+    void update(String email,
+                String firstName,
+                String lastName,
+                LocalDate dateOfBirth,
+                String gender,
+                String degreeCourse,
+                Integer semester,
+                String aboutMe);
+
 }
 

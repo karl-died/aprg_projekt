@@ -34,6 +34,7 @@ class AuthorizationConfig {
                 .requestMatchers("/register").anonymous()// This is not an endpoint but access to other resources must be set as well. You may also use the * for multiple files, e.g., *.css or /img/*.*
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/").permitAll() // Make landing page publicly accessible
+                .requestMatchers("/profiles/**").authenticated()
                 .anyRequest().authenticated() // Secure any other page (aka blacklist)
         );
 

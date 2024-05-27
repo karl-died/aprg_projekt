@@ -23,7 +23,6 @@ public class AccountController {
 
     @PostMapping("/register")
     public String register(Model model, AccountDTO account) {
-        System.out.println("Account: " + account.toString());
         accountService.registerAccount(account);
         return Redirect.to("/");
     }

@@ -2,6 +2,7 @@ package com.example.aprg_projekt.models;
 
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
@@ -12,12 +13,19 @@ public class Profile {
 
     @Id
     private UUID id;
+    @Column("FIRSTNAME")
     private String firstName;
+    @Column("LASTNAME")
     private String lastName;
+    @Column("DATEOFBIRTH")
     private LocalDate dateOfBirth;
+    @Column("GENDER")
     private String gender;
+    @Column("DEGREECOURSE")
     private String degreeCourse;
+    @Column("SEMESTER")
     private Integer semester;
+    @Column("ABOUTME")
     private String aboutMe;
 
     public Profile() {
