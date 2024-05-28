@@ -42,19 +42,9 @@ class MainController {
         return "index";
     }
 
-    @GetMapping("/welcome")
-    String welcomePage(Model model, Authentication authentication) {
-        if (authentication.getPrincipal() instanceof Account account) { // Converts getPrincipal() to User and stores the object into the variable user that is accessible within the following if-block.
-            model.addAttribute(EMAIL_KEY, account.getEmail());
-            String email = authentication.getName();
-            Optional<Profile> profile = profileService.getByEmail(email);
-            if (!profile.isPresent()) {
-                return Redirect.to("/profile/edit");
-            } else {
-                System.out.println(profile.get());
-            }
-        }
-        return "welcome";
+    @GetMapping("/login")
+    String loginPage(Model model, Authentication authentication) {
+        return Redirect.to("/");
     }
 
     @GetMapping("/register")

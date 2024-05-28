@@ -29,7 +29,7 @@ class AuthorizationConfig {
 
         http.authorizeHttpRequests(authz -> authz
                 .requestMatchers("/admin").hasAuthority(Role.ADMIN) // This endpoint is only available for users with the ROLE_ADMIN.
-                .requestMatchers("/welcome").authenticated() // This endpoint is available for any logged-in user (regardless of the role).
+                .requestMatchers("/login").authenticated() // This endpoint is available for any logged-in user (regardless of the role).
                 .requestMatchers("/styles.css").permitAll()
                 .requestMatchers("/register").anonymous()// This is not an endpoint but access to other resources must be set as well. You may also use the * for multiple files, e.g., *.css or /img/*.*
                 .requestMatchers("/error").permitAll()
