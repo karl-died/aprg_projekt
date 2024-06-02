@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * Manages the authorization for all endpoints of this web application.
@@ -21,18 +23,27 @@ class AuthorizationConfig {
 
     @Bean
     SecurityFilterChain filters(HttpSecurity http) throws Exception {
+        var loginEndpoint = "/login";
+        http.formLogin(form -> form // Customized login page.
+                .loginPage(loginEndpoint)
+                // This failure handler inserts an error-flag parameter into the
+                // login-url when a user login attempt has failed. This is needed to show an
+                // error message in the custom login form.
+                .failureHandler(new SimpleUrlAuthenticationFailureHandler(loginEndpoint + "?error=true"))
 
-        http.formLogin(Customizer.withDefaults()); // Use default login screen from Spring
+                .permitAll());
 
         http.logout(logout -> logout.logoutSuccessUrl("/")); // Show landing page after successful logout
 
 
         http.authorizeHttpRequests(authz -> authz
                 .requestMatchers("/admin").hasAuthority(Role.ADMIN) // This endpoint is only available for users with the ROLE_ADMIN.
-                .requestMatchers("/login").authenticated() // This endpoint is available for any logged-in user (regardless of the role).
                 .requestMatchers("/styles.css").permitAll()
-                .requestMatchers("/register").anonymous()// This is not an endpoint but access to other resources must be set as well. You may also use the * for multiple files, e.g., *.css or /img/*.*
+                .requestMatchers("/static/**").anonymous()
+                .requestMatchers("/images/**").permitAll()
+                .requestMatchers("/register").anonymous()
                 .requestMatchers("/error").permitAll()
+                .requestMatchers("/login").anonymous()
                 .requestMatchers("/").permitAll() // Make landing page publicly accessible
                 .requestMatchers("/profiles/**").authenticated()
                 .requestMatchers("/rate").authenticated()

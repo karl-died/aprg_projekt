@@ -44,7 +44,11 @@ class MainController {
 
     @GetMapping("/login")
     String loginPage(Model model, Authentication authentication) {
-        return Redirect.to("/");
+        if(authentication == null) {
+            return "login";
+        } else {
+            return Redirect.to("/");
+        }
     }
 
     @GetMapping("/register")
