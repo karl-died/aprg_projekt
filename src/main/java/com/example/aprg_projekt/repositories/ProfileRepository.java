@@ -142,7 +142,24 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
     """)
     List<Profile> getLikedProfiles(UUID accountId);
 
-
+    @Query("""
+        SELECT *
+        FROM profile
+        WHERE EXISTS (
+            SELECT * 
+            FROM r_rating 
+            WHERE r_rating.accountId = :accountId 
+            AND r_rating.ratedId = profile.accountId
+            AND r_rating.isLike
+        ) AND EXISTS (
+            SELECT * 
+            FROM r_rating 
+            WHERE r_rating.accountId = profile.accountId
+            AND r_rating.ratedId = :accountId
+            AND r_rating.isLike
+        );
+    """)
+    List<Profile> getMatches(UUID accountId);
 
 
     @Modifying

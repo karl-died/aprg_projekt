@@ -113,7 +113,16 @@ public class ProfileService {
         return profiles;
     }
 
+    public List<Profile> getMatches(String email) {
+        Optional<Account> account = accountRepository.findByEmail(email);
+        if(!account.isPresent()) {
+            throw new IllegalArgumentException("Account not found");
+        }
 
+        UUID id = account.get().getId();
+        List<Profile> profiles = profileRepository.getMatches(id);
+        return profiles;
+    }
 
     public void rate(String email, UUID ratedId, boolean isLike) {
         profileRepository.rate(email, ratedId, isLike);

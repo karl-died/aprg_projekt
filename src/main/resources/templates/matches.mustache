@@ -1,0 +1,15 @@
+{{>layout/header}}
+<p><a href="../">Home</a></p>
+
+<h1>Matches</h1>
+
+{{#profiles}}
+    <h3>{{name}}, {{age}}</h3>
+    <br/>
+{{/profiles}}
+
+{{^profiles}}
+    <p>Looks you don't have andy matches yet!</p>
+{{/profiles}}
+
+{{>layout/footer}}

@@ -95,4 +95,17 @@ public class ProfileController {
         }
         return "likedProfiles";
     }
+
+    @GetMapping("/matches")
+    public String showMatches(Model model, Authentication authentication) {
+        if (authentication.getPrincipal() instanceof Account account) {
+            List<Profile> likedProfiles = profileService.getMatches(account.getEmail());
+            List<ProfileDTO> displayProfiles = new ArrayList<>();
+            for (Profile profile : likedProfiles) {
+                displayProfiles.add(new ProfileDTO(profile));
+            }
+            model.addAttribute("profiles", displayProfiles);
+        }
+        return "matches";
+    }
 }
