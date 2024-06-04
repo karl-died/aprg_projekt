@@ -76,4 +76,9 @@ class MainController {
         }
         return Redirect.to("/rate");
     }
+
+    @GetMapping("/logout")
+    String logoutPage(Model model, Authentication authentication) {
+        return "logout";
+    }
 }

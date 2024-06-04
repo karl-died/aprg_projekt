@@ -2,6 +2,9 @@ package com.example.aprg_projekt.models;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 public class ProfileDTO {
@@ -13,6 +16,7 @@ public class ProfileDTO {
     private String degreeCourse;
     private Integer semester;
     private String aboutMe;
+    private List<String> imageNames;
 
     public ProfileDTO() {}
 
@@ -24,6 +28,9 @@ public class ProfileDTO {
         this.degreeCourse = profile.getDegreeCourse();
         this.semester = profile.getSemester();
         this.aboutMe = profile.getAboutMe();
+        if(profile.getImageNames() != null) {
+            this.imageNames = Arrays.asList(profile.getImageNames());
+        }
     }
 
     public UUID getId() {

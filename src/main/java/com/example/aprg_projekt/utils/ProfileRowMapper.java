@@ -14,13 +14,15 @@ public class ProfileRowMapper implements RowMapper<Profile> {
         Profile profile = new Profile();
 
         profile.setId(UUID.fromString(rs.getString("id")));
-        profile.setFirstName(rs.getString("first_name"));
-        profile.setLastName(rs.getString("last_name"));
+        profile.setFirstName(rs.getString("firstName"));
+        profile.setLastName(rs.getString("lastName"));
         profile.setGender(rs.getString("gender"));
-        profile.setDateOfBirth(LocalDate.parse(rs.getString("date_of_birth")));
+        profile.setDateOfBirth(LocalDate.parse(rs.getString("dateOfBirth").split(" ")[0]));
         profile.setAboutMe(rs.getString("aboutMe"));
         profile.setDegreeCourse(rs.getString("degreeCourse"));
         profile.setSemester(rs.getInt("semester"));
+        profile.setProfilePicture(rs.getString("profilePictureName"));
+        profile.setImageNames(rs.getObject("imageNames", String[].class));
 
 
         return profile;

@@ -23,20 +23,17 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
 
     @Query("""
         SELECT *
-        FROM profile
+        FROM profile_image
         WHERE accountId = (SELECT account.id FROM account WHERE account.email = :email)
     """)
     Optional<Profile> findByEmail(String email);
 
     @Query("""
         SELECT *
-        FROM profile
+        FROM profile_image
         WHERE accountId = (SELECT id FROM account WHERE id = :accountId)
     """)
     Optional<Profile> findByAcountId(UUID accountId);
-
-    @Query("SELECT * FROM profile")
-    List<Profile> getAll();
 
     @Modifying
     @Query("""
@@ -48,7 +45,8 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
              degreeCourse,
              semester,
              aboutMe,
-             accountId
+             accountId,
+             profilePictureName
         ) VALUES (
              :firstName,
              :lastName, 
@@ -57,7 +55,8 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
              :degreeCourse,
              :semester,
              :aboutMe,
-             (SELECT id FROM account WHERE email = :email) 
+             (SELECT id FROM account WHERE email = :email),
+             :profilePictureName
         );
 """)
     void save(String email,
@@ -67,7 +66,8 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
               String gender,
               String degreeCourse,
               Integer semester,
-              String aboutMe);
+              String aboutMe,
+              String profilePictureName);
 
     @Modifying
     @Query("""
@@ -78,7 +78,8 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
              gender = :gender,
              degreeCourse = :degreeCourse,
              semester = :semester,
-             aboutMe = :aboutMe
+             aboutMe = :aboutMe,
+             profilePictureName = :profilePictureName
         WHERE accountId = (SELECT id FROM account WHERE email = :email);
 """)
     void update(String email,
@@ -88,27 +89,43 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
                 String gender,
                 String degreeCourse,
                 Integer semester,
-                String aboutMe);
+                String aboutMe,
+                String profilePictureName);
+
+    @Modifying
+    @Query("""
+        INSERT INTO image (name, profileId)
+        VALUES (:name, (SELECT account_profile.profileId FROM account_profile WHERE account_profile.email = :email));
+    """)
+    void addImage(String email, String name);
+
+    @Modifying
+    @Query("""
+        DELETE FROM image 
+        WHERE name = :name;
+    """)
+    void removeImage(String name);
 
     @Query("""
         SELECT *
-        FROM profile
+        FROM profile_image
         WHERE NOT EXISTS (
             SELECT * 
             FROM r_rating 
-            WHERE r_rating.accountId = :accountId AND r_rating.ratedId = profile.accountId)
-        AND profile.accountId <> :accountId;
+            WHERE r_rating.accountId = :accountId AND r_rating.ratedId = profile_image.accountId)
+        AND profile_image.accountId <> :accountId;
     """)
     List<Profile> getNonRatedProfiles(UUID accountId);
 
     @Query("""
         SELECT *
-        FROM profile
+        FROM profile_image
         WHERE NOT EXISTS (
             SELECT * 
             FROM r_rating 
-            WHERE r_rating.accountId = :accountId AND r_rating.ratedId = profile.accountId)
-        AND profile.accountId <> :accountId
+            WHERE r_rating.accountId = :accountId AND r_rating.ratedId = profile_image.accountId
+        )
+        AND profile_image.accountId <> :accountId
         LIMIT 1;
     """)
     Optional<Profile> getOneNonRatedProfile(UUID accountId);
@@ -124,6 +141,9 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
             AND r_rating.isLike);
     """)
     List<Profile> getLikedProfiles(UUID accountId);
+
+
+
 
     @Modifying
     @Query("""

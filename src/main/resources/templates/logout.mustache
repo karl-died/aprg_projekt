@@ -1,0 +1,10 @@
+{{>layout/header}}
+
+<p>Do your really want to log out?</p>
+
+<form action="./logout" method="post">
+    {{>snippet/csrfToken}}
+    <input type="submit" value="Logout"/>
+</form>
+
+{{>layout/footer}}

@@ -4,15 +4,18 @@ package com.example.aprg_projekt.services;
 import com.example.aprg_projekt.models.Account;
 import com.example.aprg_projekt.models.Profile;
 import com.example.aprg_projekt.repositories.AccountRepository;
+import com.example.aprg_projekt.repositories.ImageRepository;
 import com.example.aprg_projekt.repositories.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.security.auth.login.AccountNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 
 @Service
 public class ProfileService {
@@ -21,6 +24,10 @@ public class ProfileService {
     private ProfileRepository profileRepository;
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private ImageRepository imageRepository;
+
+    String uploadDirectory = "uploads/";
 
     public Optional<Profile> getById(UUID id) {
         Optional<Profile> profile = profileRepository.findById(id);
@@ -43,7 +50,8 @@ public class ProfileService {
                     profile.getGender(),
                     profile.getDegreeCourse(),
                     profile.getSemester(),
-                    profile.getAboutMe()
+                    profile.getAboutMe(),
+                    profile.getProfilePicture()
             );
         } else {
             profileRepository.save(
@@ -54,7 +62,8 @@ public class ProfileService {
                     profile.getGender(),
                     profile.getDegreeCourse(),
                     profile.getSemester(),
-                    profile.getAboutMe()
+                    profile.getAboutMe(),
+                    profile.getProfilePicture()
             );
         }
     }
@@ -77,7 +86,20 @@ public class ProfileService {
         }
 
         UUID id = account.get().getId();
-        return profileRepository.getOneNonRatedProfile(id);
+
+        /*
+        Optional<Profile> profileOptional = profileRepository.getOneNonRatedProfile(id);
+        if(profileOptional.isPresent()) {
+            String[] imageNames = imageRepository.getImages(email);
+            System.out.println(Arrays.toString(imageNames));
+            Profile profile = profileOptional.get();
+            profile.setImageNames(imageNames);
+            return Optional.of(profile);
+        }
+        */
+        Optional<Profile> profileOptional = imageRepository.getOneNonRatedProfile(id);
+
+        return profileOptional;
     }
 
     public List<Profile> getLikedProfiles(String email) {
@@ -90,6 +112,8 @@ public class ProfileService {
         List<Profile> profiles = profileRepository.getLikedProfiles(id);
         return profiles;
     }
+
+
 
     public void rate(String email, UUID ratedId, boolean isLike) {
         profileRepository.rate(email, ratedId, isLike);
@@ -113,5 +137,20 @@ public class ProfileService {
         }
 
         return false;
+    }
+
+    public void addImage(String email, MultipartFile image) throws IOException {
+        String uniqueFileName = UUID.randomUUID().toString() + image.getOriginalFilename();
+        Path uploadPath = Path.of(this.uploadDirectory);
+        Path filePath = uploadPath.resolve(uniqueFileName);
+
+        if(!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        Files.copy(image.getInputStream(), filePath);
+        profileRepository.addImage(email, uniqueFileName);
+
+        System.out.println(filePath);
     }
 }

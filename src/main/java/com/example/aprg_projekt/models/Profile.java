@@ -6,9 +6,10 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.UUID;
 
-@Table("PROFILE")
+@Table("PROFILE_IMAGE")
 public class Profile {
 
     @Id
@@ -27,6 +28,10 @@ public class Profile {
     private Integer semester;
     @Column("ABOUTME")
     private String aboutMe;
+    @Column("PROFILEPICTURENAME")
+    private String profilePicture;
+    @Column("IMAGENAMES")
+    private String[] imageNames;
 
     public Profile() {
 
@@ -66,6 +71,28 @@ public class Profile {
         this.aboutMe = aboutMe;
     }
 
+    public Profile(UUID id,
+                   String firstName,
+                   String lastName,
+                   LocalDate dateOfBirth,
+                   String gender,
+                   String degreeCourse,
+                   Integer semester,
+                   String aboutMe,
+                   String profilePicture,
+                   String[] imageNames) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.degreeCourse = degreeCourse;
+        this.semester = semester;
+        this.aboutMe = aboutMe;
+        this.profilePicture = profilePicture;
+        this.imageNames = imageNames;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -97,6 +124,10 @@ public class Profile {
     public String getAboutMe() {
         return aboutMe;
     }
+
+    public String getProfilePicture() { return profilePicture; }
+
+    public String[] getImageNames() { return imageNames; }
 
     public void setId(UUID id) {
         this.id = id;
@@ -130,6 +161,10 @@ public class Profile {
         this.aboutMe = aboutMe;
     }
 
+    public void setProfilePicture(String profilePicture) { this.profilePicture = profilePicture; }
+
+    public void setImageNames(String[] imageNames) { this.imageNames = imageNames; }
+
     @Override
     public String toString() {
         return "Profile{" +
@@ -141,6 +176,8 @@ public class Profile {
                 ", degreeCourse='" + degreeCourse + '\'' +
                 ", semester=" + semester +
                 ", aboutMe='" + aboutMe + '\'' +
+                ", profilePicture='" + profilePicture + '\'' +
+                ", imageNames=" + Arrays.toString(imageNames) +
                 '}';
     }
 }

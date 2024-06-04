@@ -4,6 +4,9 @@
 <h1>Rate Profiles</h1>
 
 {{#profiles}}
+    {{#imageNames}}
+        <img src="./images/{{.}}" width="300">
+    {{/imageNames}}
     <h3>{{name}}, {{age}}</h3>
     <p>{{degreeCourse}}</p>
     <p>{{semester}}. Semester</p>

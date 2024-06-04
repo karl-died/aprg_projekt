@@ -33,7 +33,10 @@ class AuthorizationConfig {
 
                 .permitAll());
 
-        http.logout(logout -> logout.logoutSuccessUrl("/")); // Show landing page after successful logout
+        http.logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+        ); // Show landing page after successful logout
 
 
         http.authorizeHttpRequests(authz -> authz
@@ -44,6 +47,7 @@ class AuthorizationConfig {
                 .requestMatchers("/register").anonymous()
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/login").anonymous()
+                .requestMatchers("/logout").authenticated()
                 .requestMatchers("/").permitAll() // Make landing page publicly accessible
                 .requestMatchers("/profiles/**").authenticated()
                 .requestMatchers("/rate").authenticated()

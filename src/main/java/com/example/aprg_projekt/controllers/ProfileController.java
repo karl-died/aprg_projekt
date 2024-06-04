@@ -10,7 +10,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,14 +30,23 @@ public class ProfileController {
     }
 
     @PostMapping("/save")
-    public String saveProfile(@ModelAttribute Profile profile, Authentication authentication) {
+    public String saveProfile(@ModelAttribute Profile profile,
+                              @RequestParam(name = "image") MultipartFile image,
+                              Authentication authentication) {
         profileService.save(authentication.getName(), profile);
+        try {
+            profileService.addImage(authentication.getName(), image);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("error");
+        }
         return Redirect.to("/");
     }
 
     @GetMapping("/edit")
     public String editProfile(Model model, Authentication authentication) {
         Optional<Profile> profileOptional = profileService.getByEmail(authentication.getName());
+
         if(profileOptional.isPresent()) {
             Profile profile = profileOptional.get();
             model.addAttribute("firstName", profile.getFirstName());
@@ -45,6 +56,7 @@ public class ProfileController {
             model.addAttribute("degreeCourse", profile.getDegreeCourse());
             model.addAttribute("aboutMe", profile.getAboutMe());
             model.addAttribute("semester", profile.getSemester());
+            model.addAttribute("imageNames", profile.getImageNames());
         } else {
             model.addAttribute("firstName", "");
             model.addAttribute("lastName", "");
@@ -54,6 +66,8 @@ public class ProfileController {
             model.addAttribute("aboutMe", "");
             model.addAttribute("semester", "");
         }
+
+
         return "editProfile";
     }
 

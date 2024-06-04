@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Configuration
 class DefaultUserConfig {
@@ -42,9 +43,11 @@ class DefaultUserConfig {
             addAccountToDatabaseOnce("lara@haw-hamburg.de", "lara", Role.USER);
             addAccountToDatabaseOnce("tamara@haw-hamburg.de", "tamara", Role.USER);
 
-            addProfileToDatabaseOnce("sara@haw-hamburg.de", new Profile("Sara", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara"));
+            addProfileToDatabaseOnce("sara@haw-hamburg.de", new Profile(UUID.randomUUID(),"Sara", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {}));
             addProfileToDatabaseOnce("lara@haw-hamburg.de", new Profile("Lara", "Meyer", LocalDate.parse("2000-01-01"), "female", "Kommunikationsdesign", 5, "Hallo ich bin Lara"));
             addProfileToDatabaseOnce("tamara@haw-hamburg.de", new Profile("Tamara", "Schmidt", LocalDate.parse("2002-03-03"), "female", "Media Systems", 6, "Hallo ich bin Tamara"));
+
+            profileRepository.addImage("sara@haw-hamburg.de", "51921234-b982-4c3c-9938-a976241c8c2cScreenshot 2024-05-07 at 18.53.51.png");
         };
     }
 
@@ -72,7 +75,8 @@ class DefaultUserConfig {
                 profile.getGender(),
                 profile.getDegreeCourse(),
                 profile.getSemester(),
-                profile.getAboutMe()
+                profile.getAboutMe(),
+                profile.getProfilePicture()
         );
     }
 }
