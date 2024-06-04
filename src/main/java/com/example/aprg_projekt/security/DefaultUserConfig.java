@@ -42,10 +42,18 @@ class DefaultUserConfig {
             addAccountToDatabaseOnce("sara@haw-hamburg.de", "sara", Role.USER);
             addAccountToDatabaseOnce("lara@haw-hamburg.de", "lara", Role.USER);
             addAccountToDatabaseOnce("tamara@haw-hamburg.de", "tamara", Role.USER);
+            addAccountToDatabaseOnce("olli@haw-hamburg.de", "olli", Role.USER);
+            addAccountToDatabaseOnce("lukas@haw-hamburg.de", "lukas", Role.USER);
+            addAccountToDatabaseOnce("tim@haw-hamburg.de", "tim", Role.USER);
+            addAccountToDatabaseOnce("jana@haw-hamburg.de", "jana", Role.USER);
 
             addProfileToDatabaseOnce("sara@haw-hamburg.de", new Profile(UUID.randomUUID(),"Sara", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {}));
             addProfileToDatabaseOnce("lara@haw-hamburg.de", new Profile("Lara", "Meyer", LocalDate.parse("2000-01-01"), "female", "Kommunikationsdesign", 5, "Hallo ich bin Lara"));
             addProfileToDatabaseOnce("tamara@haw-hamburg.de", new Profile("Tamara", "Schmidt", LocalDate.parse("2002-03-03"), "female", "Media Systems", 6, "Hallo ich bin Tamara"));
+            addProfileToDatabaseOnce("olli@haw-hamburg.de", new Profile("Olli", "Schmidt", LocalDate.parse("2003-03-03"), "male", "Angewandte Informatik", 2, "Hallo ich bin Olli"));
+            addProfileToDatabaseOnce("lukas@haw-hamburg.de", new Profile("Lukas", "Schmidt", LocalDate.parse("2002-03-03"), "male", "Media Systems", 1, "Hallo ich bin Lukas"));
+            addProfileToDatabaseOnce("tim@haw-hamburg.de", new Profile("Tim", "Schmidt", LocalDate.parse("2002-03-03"), "male", "Media Systems", 3, "Hallo ich bin Tim"));
+            addProfileToDatabaseOnce("jana@haw-hamburg.de", new Profile("Jana", "Schmidt", LocalDate.parse("2001-03-03"), "female", "Media Systems", 4, "Hallo ich bin Jana"));
 
             profileRepository.addImage("sara@haw-hamburg.de", "51921234-b982-4c3c-9938-a976241c8c2cScreenshot 2024-05-07 at 18.53.51.png");
         };
