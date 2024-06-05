@@ -14,12 +14,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/chat")
 public class ChatController {
 
     private ChatService chatService;
@@ -30,7 +30,7 @@ public class ChatController {
         this.profileService = profileService;
     }
 
-    @GetMapping("/with")
+    @GetMapping("/chat/with")
     public String chatPage(Model model, @RequestParam(name = "profileId") UUID profileId, Authentication  auth) {
         if (auth.getPrincipal() instanceof Account account) {
             List<ChatMessage> chatMessages = chatService.getChatMessages(account.getEmail(), profileId);
@@ -41,7 +41,21 @@ public class ChatController {
         return "chat";
     }
 
-    @PostMapping("/send")
+    @GetMapping("/messages")
+    public @ResponseBody List<String> getMessages(@RequestParam(name = "profileId") UUID profileId, Authentication  auth) {
+        if (auth.getPrincipal() instanceof Account account) {
+            List<ChatMessage> chatMessages = chatService.getChatMessages(account.getEmail(), profileId);
+            List<String> messageStrings = new ArrayList<>();
+            for (ChatMessage chatMessage : chatMessages) {
+                messageStrings.add(chatMessage.toJsonString());
+            }
+            return messageStrings;
+        }
+        return new ArrayList<>();
+
+    }
+
+    @PostMapping("/chat/send")
     @ResponseStatus(HttpStatus.CREATED)
     public void sendMessage(@ModelAttribute(name = "messageInput") String message, @RequestParam(name = "profileId") UUID profileId, Authentication  auth) {
         if (auth.getPrincipal() instanceof Account account) {

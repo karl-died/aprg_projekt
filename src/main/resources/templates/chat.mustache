@@ -5,17 +5,10 @@
     <br/>
 {{/profile}}
 
-{{#chatMessages}}
-    {{#isIncoming}}
-        <p>{{profile.name}}: {{message}}</p>
-    {{/isIncoming}}
-    {{^isIncoming}}
-        <p>You: {{message}}</p>
-    {{/isIncoming}}
-{{/chatMessages}}
+<div id="chat"></div>
 
 <iframe name="frame" style="display:none;"></iframe>
-<form method="post" action="./send?profileId={{profile.id}}" target="frame" onsubmit="refreshPage()">
+<form method="post" action="./send?profileId={{profile.id}}" target="frame" onsubmit="resetForm(this);">
     <input type="text" id="messageInput" name="messageInput" required autofocus>
     {{>snippet/csrfToken}}
     <input type="submit" value="Send">
@@ -27,6 +20,49 @@
             location.reload ? location.reload() : location = location;
         }, 100);
     }
+
+    function messageFromJSON(json){
+        var name = "{{profile.name}}";
+        var html = "<p>" + (json['isIncoming'] ? name : "You" ) + ": " + json['message'] + "</p>";
+        return html;
+    }
+
+    async function loadChat() {
+        var hostUrl = location.host;
+
+        var url = 'http://' + hostUrl + '/messages?profileId={{profile.id}}';
+
+        let messages = [];
+        let chatHTML = ""
+        let data = await fetch(url)
+                .then((r) => r.json())
+                .then(data => {
+                    return data;
+                });
+
+        data.forEach((e) => {
+            chatHTML = chatHTML + (messageFromJSON(JSON.parse(e.replace('/', ''))))
+        });
+
+
+        messages.forEach((e) => chatHTML = chatHTML + messageFromJSON(e));
+        var chatElement = document.getElementById('chat');
+        chatElement.innerHTML = chatHTML;
+    }
+
+    function resetForm(e) {
+        that = e;
+        setTimeout(async function() {
+            loadChat();
+            e.reset();
+        }, 100);
+    }
+
+    addEventListener("DOMContentLoaded", loadChat);
+
+    setInterval(loadChat, 2000)
+
+
 </script>
 
 

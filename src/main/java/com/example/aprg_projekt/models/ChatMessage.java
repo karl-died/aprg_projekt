@@ -39,4 +39,21 @@ public class ChatMessage {
     public void setDateSent(LocalDateTime dateSent) {
         this.dateSent = dateSent;
     }
+
+    @Override
+    public String toString() {
+        return "ChatMessage{" +
+                "message='" + message + '\'' +
+                ", isIncoming=" + isIncoming +
+                ", dateSent=" + dateSent +
+                '}';
+    }
+
+    public String toJsonString() {
+
+        return "{ \"message\":\"" + message + "\"" +
+                ", \"isIncoming\":" + isIncoming +
+                ", \"dateSent\":\"" + dateSent +
+                "\"}";
+    }
 }

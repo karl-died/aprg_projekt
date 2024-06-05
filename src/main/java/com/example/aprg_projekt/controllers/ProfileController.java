@@ -6,6 +6,7 @@ import com.example.aprg_projekt.models.ProfileDTO;
 import com.example.aprg_projekt.services.ProfileService;
 import com.example.aprg_projekt.utils.Redirect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +31,7 @@ public class ProfileController {
     }
 
     @PostMapping("/save")
+    @ResponseStatus(HttpStatus.CREATED)
     public String saveProfile(@ModelAttribute Profile profile,
                               @RequestParam(name = "image") MultipartFile image,
                               Authentication authentication) {

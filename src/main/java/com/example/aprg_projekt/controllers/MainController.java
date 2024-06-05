@@ -5,6 +5,7 @@ import com.example.aprg_projekt.models.Profile;
 import com.example.aprg_projekt.models.ProfileDTO;
 import com.example.aprg_projekt.services.ProfileService;
 import com.example.aprg_projekt.utils.Redirect;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +70,7 @@ class MainController {
     }
 
     @PostMapping("/rate")
+    @ResponseStatus(HttpStatus.CREATED)
     String rateProfile(@RequestParam(name = "profileId") UUID profileId,
                      @RequestParam(name = "isLike") boolean isLike,
                      Authentication authentication) {

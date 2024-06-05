@@ -6,6 +6,7 @@ import com.example.aprg_projekt.models.AccountDTO;
 import com.example.aprg_projekt.services.AccountService;
 import com.example.aprg_projekt.utils.Redirect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ public class AccountController {
     }
 
     @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
     public String register(Model model, AccountDTO account) {
         accountService.registerAccount(account);
         return Redirect.to("/");
