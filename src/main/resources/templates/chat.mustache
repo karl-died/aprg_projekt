@@ -1,0 +1,33 @@
+{{>layout/header}}
+
+{{#profile}}
+    <h1>{{name}}, {{age}}</h1>
+    <br/>
+{{/profile}}
+
+{{#chatMessages}}
+    {{#isIncoming}}
+        <p>{{profile.name}}: {{message}}</p>
+    {{/isIncoming}}
+    {{^isIncoming}}
+        <p>You: {{message}}</p>
+    {{/isIncoming}}
+{{/chatMessages}}
+
+<iframe name="frame" style="display:none;"></iframe>
+<form method="post" action="./send?profileId={{profile.id}}" target="frame" onsubmit="refreshPage()">
+    <input type="text" id="messageInput" name="messageInput" required autofocus>
+    {{>snippet/csrfToken}}
+    <input type="submit" value="Send">
+</form>
+
+<script type='text/javascript'>
+    function refreshPage(){
+        setTimeout(function () {
+            location.reload ? location.reload() : location = location;
+        }, 100);
+    }
+</script>
+
+
+{{>layout/footer}}

@@ -61,4 +61,17 @@ CREATE VIEW profile_image AS
            ) as imageNames
     FROM profile;
 
+CREATE TABLE chat (
+    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    accountId1 uuid REFERENCES account(id) NOT NULL,
+    accountId2 uuid REFERENCES account(id) NOT NULL
+);
+
+CREATE TABLE chatMessage (
+    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    chatId uuid REFERENCES chat(id) NOT NULL,
+    senderId uuid REFERENCES account(id) NOT NULL,
+    message TEXT,
+    dateSent TIMESTAMP NOT NULL
+);
 

@@ -4,6 +4,7 @@ import com.example.aprg_projekt.models.Account;
 import com.example.aprg_projekt.models.Profile;
 import com.example.aprg_projekt.models.Role;
 import com.example.aprg_projekt.repositories.AccountRepository;
+import com.example.aprg_projekt.repositories.ChatRepository;
 import com.example.aprg_projekt.repositories.ProfileRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
+import java.util.Optional;
 import java.util.UUID;
 
 @Configuration
@@ -19,11 +24,16 @@ class DefaultUserConfig {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final ProfileRepository profileRepository;
+    private final ChatRepository chatRepository;
 
-    DefaultUserConfig(AccountRepository accountRepository, PasswordEncoder passwordEncoder, ProfileRepository profileRepository) {
+    DefaultUserConfig(AccountRepository accountRepository,
+                      PasswordEncoder passwordEncoder,
+                      ProfileRepository profileRepository,
+                      ChatRepository chatRepository) {
         this.accountRepository = accountRepository;
         this.passwordEncoder = passwordEncoder;
         this.profileRepository = profileRepository;
+        this.chatRepository = chatRepository;
     }
 
     /**
@@ -56,6 +66,14 @@ class DefaultUserConfig {
             addProfileToDatabaseOnce("jana@haw-hamburg.de", new Profile("Jana", "Schmidt", LocalDate.parse("2001-03-03"), "female", "Media Systems", 4, "Hallo ich bin Jana"));
 
             profileRepository.addImage("sara@haw-hamburg.de", "51921234-b982-4c3c-9938-a976241c8c2cScreenshot 2024-05-07 at 18.53.51.png");
+            Optional<Profile> laraProfile = profileRepository.findByEmail("lara@haw-hamburg.de");
+            Optional<Profile> saraProfile = profileRepository.findByEmail("sara@haw-hamburg.de");
+
+            profileRepository.rate("lara@haw-hamburg.de", saraProfile.get().getId(), true);
+            profileRepository.rate("sara@haw-hamburg.de", laraProfile.get().getId(), true);
+
+            chatRepository.postMessage("lara@haw-hamburg.de", saraProfile.get().getId(), "Hallo ich bin Lara!", LocalDateTime.now().minus(10, ChronoUnit.MINUTES));
+            chatRepository.postMessage("sara@haw-hamburg.de", laraProfile.get().getId(), "Hallo!", LocalDateTime.now().minus(2, ChronoUnit.MINUTES));
         };
     }
 
