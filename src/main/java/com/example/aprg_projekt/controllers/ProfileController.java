@@ -31,7 +31,6 @@ public class ProfileController {
     }
 
     @PostMapping("/save")
-    @ResponseStatus(HttpStatus.CREATED)
     public String saveProfile(@ModelAttribute Profile profile,
                               @RequestParam(name = "image") MultipartFile image,
                               Authentication authentication) {
@@ -51,6 +50,7 @@ public class ProfileController {
 
         if(profileOptional.isPresent()) {
             Profile profile = profileOptional.get();
+            model.addAttribute("exists", true);
             model.addAttribute("firstName", profile.getFirstName());
             model.addAttribute("lastName", profile.getLastName());
             model.addAttribute("dateOfBirth", profile.getDateOfBirth());
@@ -60,6 +60,7 @@ public class ProfileController {
             model.addAttribute("semester", profile.getSemester());
             model.addAttribute("imageNames", profile.getImageNames());
         } else {
+            model.addAttribute("exists", false);
             model.addAttribute("firstName", "");
             model.addAttribute("lastName", "");
             model.addAttribute("dateOfBirth", "");

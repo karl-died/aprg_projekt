@@ -35,11 +35,16 @@ class MainController {
 
     @GetMapping("/")
     String landingPage(Model model, Authentication authentication) {
-        if (authentication == null) {
-            model.addAttribute(AUTHENTICATED_KEY, false);
-        } else {
+        if (authentication != null) {
             model.addAttribute(AUTHENTICATED_KEY, authentication.isAuthenticated());
-
+            Optional<Profile> profileOptional = profileService.getByEmail(authentication.getName());
+            if (profileOptional.isPresent()) {
+                return Redirect.to("/rate");
+            } else {
+                return Redirect.to("/profile/edit");
+            }
+        } else {
+            model.addAttribute(AUTHENTICATED_KEY, false);
         }
         return "index";
     }
@@ -49,7 +54,7 @@ class MainController {
         if(authentication == null) {
             return "login";
         } else {
-            return Redirect.to("/");
+            return Redirect.to("/rate");
         }
     }
 
@@ -70,7 +75,6 @@ class MainController {
     }
 
     @PostMapping("/rate")
-    @ResponseStatus(HttpStatus.CREATED)
     String rateProfile(@RequestParam(name = "profileId") UUID profileId,
                      @RequestParam(name = "isLike") boolean isLike,
                      Authentication authentication) {

@@ -30,7 +30,6 @@ class AuthorizationConfig {
                 // login-url when a user login attempt has failed. This is needed to show an
                 // error message in the custom login form.
                 .failureHandler(new SimpleUrlAuthenticationFailureHandler(loginEndpoint + "?error=true"))
-
                 .permitAll());
 
         http.logout(logout -> logout
@@ -52,6 +51,7 @@ class AuthorizationConfig {
                 .requestMatchers("/profiles/**").authenticated()
                 .requestMatchers("/rate").authenticated()
                 .requestMatchers("/chat/**").authenticated()
+                .requestMatchers("/profile/edit").authenticated()
                 .anyRequest().authenticated() // Secure any other page (aka blacklist)
         );
 

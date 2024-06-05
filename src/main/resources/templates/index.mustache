@@ -1,5 +1,9 @@
 {{>layout/header}}
 
+{{#authenticated}}
+    {{>snippet/nav}}
+{{/authenticated}}
+
 <h1>Zunder</h1>
 <img src="./images/logo.png" width="300">
 {{^authenticated}}

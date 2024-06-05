@@ -23,9 +23,8 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
     public String register(Model model, AccountDTO account) {
         accountService.registerAccount(account);
-        return Redirect.to("/");
+        return Redirect.to("/profile/edit");
     }
 }

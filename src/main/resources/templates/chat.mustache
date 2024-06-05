@@ -1,5 +1,7 @@
 {{>layout/header}}
 
+{{>snippet/goBackLink}}
+
 {{#profile}}
     <h1>{{name}}, {{age}}</h1>
     <br/>
@@ -51,7 +53,6 @@
     }
 
     function resetForm(e) {
-        that = e;
         setTimeout(async function() {
             loadChat();
             e.reset();

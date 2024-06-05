@@ -1,5 +1,7 @@
 {{>layout/header}}
-
+{{#exists}}
+    {{>snippet/nav}}
+{{/exists}}
 
 <form method="post" action="./save" enctype="multipart/form-data">
     <h2>Profile</h2>
