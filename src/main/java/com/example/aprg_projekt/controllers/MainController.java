@@ -53,7 +53,7 @@ class MainController {
 
     @GetMapping("/rate")
     String ratePage(Model model, Authentication authentication) {
-        Profile dummy = new Profile(UUID.randomUUID(),"Lara", "Meyer", LocalDate.parse("2000-01-01"), "female", "Kommunikationsdesign", 5, "Hallo ich bin Lara");
+        Profile dummy = new Profile(UUID.randomUUID(),"Lara", "Meyer", LocalDate.parse("2000-01-01"), "female", "Kommunikationsdesign", 5, "Hallo ich bin Lara", "", new String[] {"francis.jpg"});
         model.addAttribute("profiles", new ProfileDTO(dummy));
 
         return "rate";

@@ -41,7 +41,7 @@ public class ChatController {
                 new ChatMessage("Dann halt nicht, tschüss!", false, LocalDateTime.now().plusMinutes(-2))
         );
         model.addAttribute("messages", chatMessages);
-        Profile dummy = new Profile(UUID.randomUUID(), "Lara", "Meyer", LocalDate.parse("2000-01-01"), "female", "Kommunikationsdesign", 5, "Hallo ich bin Lara");
+        Profile dummy = new Profile(UUID.randomUUID(), "Lara", "Meyer", LocalDate.parse("2000-01-01"), "female", "Kommunikationsdesign", 5, "Hallo ich bin Lara", "pfp1.jpeg", new String[] {});
         model.addAttribute("profile", new ProfileDTO(dummy));
 
         return "chat";

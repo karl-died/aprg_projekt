@@ -49,7 +49,7 @@ public class ProfileController {
 
     @GetMapping("/edit")
     public String editProfile(Model model, Authentication authentication) {
-        Profile dummy = new Profile(UUID.randomUUID(),"Lara", "Meyer", LocalDate.parse("2000-01-01"), "female", "Kommunikationsdesign", 5, "Hallo ich bin Lara");
+        Profile dummy = new Profile(UUID.randomUUID(),"Lara", "Meyer", LocalDate.parse("2000-01-01"), "female", "Kommunikationsdesign", 5, "Hallo ich bin Lara", "pfp2.jpeg", new String[] {"francis.jpg"});
         Profile profile = dummy;
         model.addAttribute("exists", true);
         model.addAttribute("firstName", profile.getFirstName());
@@ -60,6 +60,7 @@ public class ProfileController {
         model.addAttribute("aboutMe", profile.getAboutMe());
         model.addAttribute("semester", profile.getSemester());
         model.addAttribute("imageNames", profile.getImageNames());
+        model.addAttribute("profilePicture", profile.getProfilePicture());
 
         return "editProfile";
     }
@@ -75,6 +76,7 @@ public class ProfileController {
         model.addAttribute("degreeCourse", "");
         model.addAttribute("aboutMe", "");
         model.addAttribute("semester", "");
+        model.addAttribute("profilePicture", "");
 
         return "editProfile";
     }
@@ -97,25 +99,25 @@ public class ProfileController {
     public String showMatches(Model model, Authentication authentication) {
 
         List<ProfileDTO>  matchedProfiles = Arrays.asList(
-                new ProfileDTO(new Profile(UUID.randomUUID(),"Sara", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
-                new ProfileDTO(new Profile(UUID.randomUUID(),"Lara", "Müller", LocalDate.parse("2003-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
-                new ProfileDTO(new Profile(UUID.randomUUID(),"Tamara", "Müller", LocalDate.parse("2000-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
-                new ProfileDTO(new Profile(UUID.randomUUID(),"Frida", "Müller", LocalDate.parse("1999-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
-                new ProfileDTO(new Profile(UUID.randomUUID(),"Lisa", "Müller", LocalDate.parse("2002-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
-                new ProfileDTO(new Profile(UUID.randomUUID(),"Briana", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {}))
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Sara", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "pfp2.jpeg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Lara", "Müller", LocalDate.parse("2003-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "pfp1.jpeg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Tamara", "Müller", LocalDate.parse("2000-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "pfp3.jpeg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Frida", "Müller", LocalDate.parse("1999-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "pfp4.jpeg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Lisa", "Müller", LocalDate.parse("2002-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "pfp5.jpeg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Briana", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "pfp6.jpeg", new String[] {}))
         );
 
         model.addAttribute("matches", matchedProfiles);
 
         List<ProfileDTO>  chats = Arrays.asList(
-                new ProfileDTO(new Profile(UUID.randomUUID(),"Magdalena", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
-                new ProfileDTO(new Profile(UUID.randomUUID(),"Lara", "Müller", LocalDate.parse("2003-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
-                new ProfileDTO(new Profile(UUID.randomUUID(),"Christine", "Müller", LocalDate.parse("2000-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
-                new ProfileDTO(new Profile(UUID.randomUUID(),"Paula", "Müller", LocalDate.parse("1999-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
-                new ProfileDTO(new Profile(UUID.randomUUID(),"Alana", "Müller", LocalDate.parse("2002-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
-                new ProfileDTO(new Profile(UUID.randomUUID(),"Henriette", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
-                new ProfileDTO(new Profile(UUID.randomUUID(),"Fabienne", "Müller", LocalDate.parse("2003-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
-                new ProfileDTO(new Profile(UUID.randomUUID(),"Franziska", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {}))
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Magdalena", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "pfp7.jpeg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Lara", "Müller", LocalDate.parse("2003-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "pfp8.jpeg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Christine", "Müller", LocalDate.parse("2000-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "pfp1.jpeg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Paula", "Müller", LocalDate.parse("1999-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "pfp2.jpeg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Alana", "Müller", LocalDate.parse("2002-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "pfp3.jpeg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Henriette", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "pfp4.jpeg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Fabienne", "Müller", LocalDate.parse("2003-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "pfp5.jpeg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Franziska", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "pfp6.jpeg", new String[] {}))
         );
         String[] messages = {"Hey, was geht?", "Hallo!", "Hey wie gehts?", "Hallöchen!", "Hallo", "Hallo, wie gehts? Ich bin Henriette und ich bin sehr froh dich kennen zu lernen! Mein Sternzeichen ist Zwilling falls es dich interessiert.", "Hallöchen!", "Hallo"};
 

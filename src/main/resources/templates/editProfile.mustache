@@ -12,6 +12,12 @@
     <p>
         <input type="file" id="image" name="image" accept="image/*">
     </p>
+    {{#profilePicture}}
+        <img src="../images/{{.}}" width="50">
+    {{/profilePicture}}
+    <p>
+        <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
+    </p>
     <p>
         <label for="firstName">First Name</label>
         <input type="text" id="firstName" name="firstName" placeholder="First Name" value="{{firstName}}" required autofocus>
