@@ -23,6 +23,7 @@ class AuthorizationConfig {
 
     @Bean
     SecurityFilterChain filters(HttpSecurity http) throws Exception {
+        /*
         var loginEndpoint = "/login";
         http.formLogin(form -> form // Customized login page.
                 .loginPage(loginEndpoint)
@@ -36,23 +37,10 @@ class AuthorizationConfig {
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
         ); // Show landing page after successful logout
-
+        */
 
         http.authorizeHttpRequests(authz -> authz
-                .requestMatchers("/admin").hasAuthority(Role.ADMIN) // This endpoint is only available for users with the ROLE_ADMIN.
-                .requestMatchers("/styles.css").permitAll()
-                .requestMatchers("/static/**").anonymous()
-                .requestMatchers("/images/**").permitAll()
-                .requestMatchers("/register").anonymous()
-                .requestMatchers("/error").permitAll()
-                .requestMatchers("/login").anonymous()
-                .requestMatchers("/logout").authenticated()
-                .requestMatchers("/").permitAll() // Make landing page publicly accessible
-                .requestMatchers("/profiles/**").authenticated()
-                .requestMatchers("/rate").authenticated()
-                .requestMatchers("/chat/**").authenticated()
-                .requestMatchers("/profile/edit").authenticated()
-                .anyRequest().authenticated() // Secure any other page (aka blacklist)
+                .anyRequest().permitAll() // Secure any other page (aka blacklist)
         );
 
         return http.build();
