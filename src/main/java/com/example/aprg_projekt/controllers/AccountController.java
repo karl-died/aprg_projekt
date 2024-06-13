@@ -24,7 +24,11 @@ public class AccountController {
 
     @PostMapping("/register")
     public String register(Model model, AccountDTO account) {
-        accountService.registerAccount(account);
-        return Redirect.to("/profile/edit");
+        return Redirect.to("/profile/edit/empty");
+    }
+
+    @PostMapping("/login")
+    public String login(Model model, AccountDTO account) {
+        return Redirect.to("/rate");
     }
 }

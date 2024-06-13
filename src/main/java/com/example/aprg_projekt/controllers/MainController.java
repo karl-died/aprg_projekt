@@ -37,7 +37,7 @@ class MainController {
     @GetMapping("/")
     String landingPage(Model model, Authentication authentication) {
 
-        return "index";
+        return "login";
     }
 
     @GetMapping("/login")
