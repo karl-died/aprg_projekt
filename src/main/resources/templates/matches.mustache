@@ -13,8 +13,10 @@
     <p>{{lastChatMessage.message}}</p>
 {{/chats}}
 
-{{^profiles}}
-    <p>Looks you don't have andy matches yet!</p>
-{{/profiles}}
+{{^matches}}
+    {{^chats}}
+        <p>Looks you don't have any matches yet!</p>
+    {{/chats}}
+{{/matches}}
 
 {{>layout/footer}}
