@@ -13,11 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 @Controller
 public class ChatController {
@@ -31,36 +30,33 @@ public class ChatController {
     }
 
     @GetMapping("/chat/with")
-    public String chatPage(Model model, @RequestParam(name = "profileId") UUID profileId, Authentication  auth) {
-        if (auth.getPrincipal() instanceof Account account) {
-            List<ChatMessage> chatMessages = chatService.getChatMessages(account.getEmail(), profileId);
-            model.addAttribute("chatMessages", chatMessages);
-            Optional<Profile> profile = profileService.getById(profileId);
-            model.addAttribute("profile", new ProfileDTO(profile.get()));
-        }
+    public String chatPage(Model model, @RequestParam(name = "profileId") UUID profileId, Authentication auth) {
+
+        List<ChatMessage> chatMessages = Arrays.asList(
+                new ChatMessage("Hallo!", true, LocalDateTime.now().plusMinutes(-20)),
+                new ChatMessage("Was geht?", false, LocalDateTime.now().plusMinutes(-18)),
+                new ChatMessage("Nicht viel", true, LocalDateTime.now().plusMinutes(-17)),
+                new ChatMessage("Aha cool", false, LocalDateTime.now().plusMinutes(-14)),
+                new ChatMessage("Was ist eigentlich dein Sternzeichen? Sowas finde ich nämlich mega wichtig und so, weil ich kann echt nur mit Waage und Krebs, alle anderen fucken mich nur ab. Also wenn du nicht Waage oder Krebs bist kannst du mich direkt blockieren.", true, LocalDateTime.now().plusMinutes(-12)),
+                new ChatMessage("Dann halt nicht, tschüss!", false, LocalDateTime.now().plusMinutes(-2))
+        );
+        model.addAttribute("messages", chatMessages);
+        Profile dummy = new Profile(UUID.randomUUID(), "Lara", "Meyer", LocalDate.parse("2000-01-01"), "female", "Kommunikationsdesign", 5, "Hallo ich bin Lara");
+        model.addAttribute("profile", new ProfileDTO(dummy));
+
         return "chat";
     }
 
     @GetMapping("/messages")
     public @ResponseBody List<String> getMessages(@RequestParam(name = "profileId") UUID profileId, Authentication  auth) {
-        if (auth.getPrincipal() instanceof Account account) {
-            List<ChatMessage> chatMessages = chatService.getChatMessages(account.getEmail(), profileId);
-            List<String> messageStrings = new ArrayList<>();
-            for (ChatMessage chatMessage : chatMessages) {
-                messageStrings.add(chatMessage.toJsonString());
-            }
-            return messageStrings;
-        }
-        return new ArrayList<>();
-
+        List<String> messageStrings = new ArrayList<>();
+        return messageStrings;
     }
 
     @PostMapping("/chat/send")
     @ResponseStatus(HttpStatus.CREATED)
     public void sendMessage(@ModelAttribute(name = "messageInput") String message, @RequestParam(name = "profileId") UUID profileId, Authentication  auth) {
-        if (auth.getPrincipal() instanceof Account account) {
-            chatService.postMessage(account.getEmail(), profileId, message, LocalDateTime.now());
-        }
+
     }
 
 }

@@ -17,6 +17,7 @@ public class ProfileDTO {
     private Integer semester;
     private String aboutMe;
     private List<String> imageNames;
+    private ChatMessage lastChatMessage;
 
     public ProfileDTO() {}
 
@@ -61,6 +62,8 @@ public class ProfileDTO {
         return aboutMe;
     }
 
+    public ChatMessage getLastChatMessage() { return lastChatMessage; }
+
     public void setId(UUID id) {
         this.id = id;
     }
@@ -88,4 +91,6 @@ public class ProfileDTO {
     public void setAboutMe(String aboutMe) {
         this.aboutMe = aboutMe;
     }
+
+    public void setLastChatMessage(ChatMessage lastChatMessage) { this.lastChatMessage = lastChatMessage; }
 }

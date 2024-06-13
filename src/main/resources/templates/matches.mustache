@@ -3,11 +3,15 @@
 
 <h1>Matches</h1>
 
-{{#profiles}}
-    <h3>{{name}}, {{age}}</h3>
-    <p><a href="../chat/with?profileId={{id}}">Chat</a></p>
-    <br/>
-{{/profiles}}
+{{#matches}}
+    <h3><a href="../chat/with?profileId={{id}}">{{name}}, {{age}}</a></h3>
+    <p></p>
+{{/matches}}
+</br>
+{{#chats}}
+    <h3><a href="../chat/with?profileId={{id}}">{{name}}, {{age}}</a></h3>
+    <p>{{lastChatMessage.message}}</p>
+{{/chats}}
 
 {{^profiles}}
     <p>Looks you don't have andy matches yet!</p>

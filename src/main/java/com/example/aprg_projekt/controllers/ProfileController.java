@@ -1,6 +1,7 @@
 package com.example.aprg_projekt.controllers;
 
 import com.example.aprg_projekt.models.Account;
+import com.example.aprg_projekt.models.ChatMessage;
 import com.example.aprg_projekt.models.Profile;
 import com.example.aprg_projekt.models.ProfileDTO;
 import com.example.aprg_projekt.services.ProfileService;
@@ -14,10 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Controller
 @RequestMapping("/profile")
@@ -34,6 +34,7 @@ public class ProfileController {
     public String saveProfile(@ModelAttribute Profile profile,
                               @RequestParam(name = "image") MultipartFile image,
                               Authentication authentication) {
+        /*
         profileService.save(authentication.getName(), profile);
         try {
             profileService.addImage(authentication.getName(), image);
@@ -41,35 +42,39 @@ public class ProfileController {
             e.printStackTrace();
             System.out.println("error");
         }
+
+         */
         return Redirect.to("/");
     }
 
     @GetMapping("/edit")
     public String editProfile(Model model, Authentication authentication) {
-        Optional<Profile> profileOptional = profileService.getByEmail(authentication.getName());
+        Profile dummy = new Profile(UUID.randomUUID(),"Lara", "Meyer", LocalDate.parse("2000-01-01"), "female", "Kommunikationsdesign", 5, "Hallo ich bin Lara");
+        Profile profile = dummy;
+        model.addAttribute("exists", true);
+        model.addAttribute("firstName", profile.getFirstName());
+        model.addAttribute("lastName", profile.getLastName());
+        model.addAttribute("dateOfBirth", profile.getDateOfBirth());
+        model.addAttribute("gender", profile.getGender());
+        model.addAttribute("degreeCourse", profile.getDegreeCourse());
+        model.addAttribute("aboutMe", profile.getAboutMe());
+        model.addAttribute("semester", profile.getSemester());
+        model.addAttribute("imageNames", profile.getImageNames());
 
-        if(profileOptional.isPresent()) {
-            Profile profile = profileOptional.get();
-            model.addAttribute("exists", true);
-            model.addAttribute("firstName", profile.getFirstName());
-            model.addAttribute("lastName", profile.getLastName());
-            model.addAttribute("dateOfBirth", profile.getDateOfBirth());
-            model.addAttribute("gender", profile.getGender());
-            model.addAttribute("degreeCourse", profile.getDegreeCourse());
-            model.addAttribute("aboutMe", profile.getAboutMe());
-            model.addAttribute("semester", profile.getSemester());
-            model.addAttribute("imageNames", profile.getImageNames());
-        } else {
-            model.addAttribute("exists", false);
-            model.addAttribute("firstName", "");
-            model.addAttribute("lastName", "");
-            model.addAttribute("dateOfBirth", "");
-            model.addAttribute("gender", "");
-            model.addAttribute("degreeCourse", "");
-            model.addAttribute("aboutMe", "");
-            model.addAttribute("semester", "");
-        }
+        return "editProfile";
+    }
 
+    @GetMapping("/edit/empty")
+    public String editEmptyProfile(Model model, Authentication authentication) {
+
+        model.addAttribute("exists", false);
+        model.addAttribute("firstName", "");
+        model.addAttribute("lastName", "");
+        model.addAttribute("dateOfBirth", "");
+        model.addAttribute("gender", "");
+        model.addAttribute("degreeCourse", "");
+        model.addAttribute("aboutMe", "");
+        model.addAttribute("semester", "");
 
         return "editProfile";
     }
@@ -86,29 +91,45 @@ public class ProfileController {
         return "viewProfile";
     }
 
-    @GetMapping("/likes")
-    public String showLikedProfiles(Model model, Authentication authentication) {
-        if (authentication.getPrincipal() instanceof Account account) {
-            List<Profile> likedProfiles = profileService.getLikedProfiles(account.getEmail());
-            List<ProfileDTO> displayProfiles = new ArrayList<>();
-            for (Profile profile : likedProfiles) {
-                displayProfiles.add(new ProfileDTO(profile));
-            }
-            model.addAttribute("profiles", displayProfiles);
-        }
-        return "likedProfiles";
-    }
+
 
     @GetMapping("/matches")
     public String showMatches(Model model, Authentication authentication) {
-        if (authentication.getPrincipal() instanceof Account account) {
-            List<Profile> likedProfiles = profileService.getMatches(account.getEmail());
-            List<ProfileDTO> displayProfiles = new ArrayList<>();
-            for (Profile profile : likedProfiles) {
-                displayProfiles.add(new ProfileDTO(profile));
-            }
-            model.addAttribute("profiles", displayProfiles);
+
+        List<ProfileDTO>  matchedProfiles = Arrays.asList(
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Sara", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Lara", "Müller", LocalDate.parse("2003-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Tamara", "Müller", LocalDate.parse("2000-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Frida", "Müller", LocalDate.parse("1999-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Lisa", "Müller", LocalDate.parse("2002-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Briana", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {}))
+        );
+
+        model.addAttribute("matches", matchedProfiles);
+
+        List<ProfileDTO>  chats = Arrays.asList(
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Magdalena", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Lara", "Müller", LocalDate.parse("2003-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Christine", "Müller", LocalDate.parse("2000-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Paula", "Müller", LocalDate.parse("1999-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Alana", "Müller", LocalDate.parse("2002-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Henriette", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Fabienne", "Müller", LocalDate.parse("2003-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {})),
+                new ProfileDTO(new Profile(UUID.randomUUID(),"Franziska", "Müller", LocalDate.parse("2001-01-01"), "female", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {}))
+        );
+        String[] messages = {"Hey, was geht?", "Hallo!", "Hey wie gehts?", "Hallöchen!", "Hallo", "Hallo, wie gehts? Ich bin Henriette und ich bin sehr froh dich kennen zu lernen! Mein Sternzeichen ist Zwilling falls es dich interessiert.", "Hallöchen!", "Hallo"};
+
+        for(int i = 0; i < chats.size(); i++){
+            chats.get(i).setLastChatMessage(new ChatMessage(messages[i], (i%2 == 0), LocalDateTime.now()));
         }
+
+        model.addAttribute("chats", chats);
+
         return "matches";
+    }
+
+    @GetMapping("/logout")
+    public String logout(){
+        return Redirect.to("/logout");
     }
 }

@@ -4,8 +4,17 @@
 
 {{#profile}}
     <h1>{{name}}, {{age}}</h1>
-    <br/>
 {{/profile}}
+
+{{#messages}}
+    {{#isIncoming}}
+        <p>{{profile.name}}: {{message}}</p>
+    {{/isIncoming}}
+    {{^isIncoming}}
+        <p>You: {{message}}</p>
+    {{/isIncoming}}
+
+{{/messages}}
 
 <div id="chat"></div>
 

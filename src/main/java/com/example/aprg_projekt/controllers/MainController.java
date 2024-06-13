@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,27 +36,14 @@ class MainController {
 
     @GetMapping("/")
     String landingPage(Model model, Authentication authentication) {
-        if (authentication != null) {
-            model.addAttribute(AUTHENTICATED_KEY, authentication.isAuthenticated());
-            Optional<Profile> profileOptional = profileService.getByEmail(authentication.getName());
-            if (profileOptional.isPresent()) {
-                return Redirect.to("/rate");
-            } else {
-                return Redirect.to("/profile/edit");
-            }
-        } else {
-            model.addAttribute(AUTHENTICATED_KEY, false);
-        }
+
         return "index";
     }
 
     @GetMapping("/login")
     String loginPage(Model model, Authentication authentication) {
-        if(authentication == null) {
-            return "login";
-        } else {
-            return Redirect.to("/rate");
-        }
+
+        return "login";
     }
 
     @GetMapping("/register")
@@ -65,12 +53,9 @@ class MainController {
 
     @GetMapping("/rate")
     String ratePage(Model model, Authentication authentication) {
-        if (authentication.getPrincipal() instanceof Account account) {
-            Optional<Profile> profile = profileService.getOneNonRatedProfile(account.getEmail());
-            if (profile.isPresent()) {
-                model.addAttribute("profiles", new ProfileDTO(profile.get()));
-            }
-        }
+        Profile dummy = new Profile(UUID.randomUUID(),"Lara", "Meyer", LocalDate.parse("2000-01-01"), "female", "Kommunikationsdesign", 5, "Hallo ich bin Lara");
+        model.addAttribute("profiles", new ProfileDTO(dummy));
+
         return "rate";
     }
 
@@ -78,9 +63,7 @@ class MainController {
     String rateProfile(@RequestParam(name = "profileId") UUID profileId,
                      @RequestParam(name = "isLike") boolean isLike,
                      Authentication authentication) {
-        if (authentication.getPrincipal() instanceof Account account) {
-            profileService.rate(account.getEmail(), profileId, isLike);
-        }
+
         return Redirect.to("/rate");
     }
 
