@@ -1,0 +1,38 @@
+body {
+    background-color: lightblue;
+    text-align: center
+}
+
+h2 {
+    color: Black;
+    font-family: jaldi;
+}
+
+p {
+    font-family: jaldi;
+    font-size: 20px;
+    color: Black;
+}
+button {
+    background-color: #2B2828;
+    border-radius: 12px;
+    color: white;
+    padding: 14px 40px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    font-family: jaldi;
+    transition-duration: 0.4s;
+}
+button:hover {
+    background-color: #04AA6D; /* Green */
+    color: white;
+}
+
+input{
+    border-radius: 12px;
+    outline: none;
+    padding: 10px;
+    font-family: jaldi;
+
+}
