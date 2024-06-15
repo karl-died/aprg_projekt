@@ -41,7 +41,7 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
              firstName, 
              lastName, 
              dateOfBirth,
-             gender,
+             genderId,
              degreeCourse,
              semester,
              aboutMe,
@@ -51,7 +51,7 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
              :firstName,
              :lastName, 
              :dateOfBirth,
-             :gender,
+             (SELECT gender.id FROM gender WHERE gender.name = :gender),
              :degreeCourse,
              :semester,
              :aboutMe,
@@ -75,7 +75,7 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
         SET  firstName = :firstName, 
              lastName = :lastName, 
              dateOfBirth = :dateOfBirth,
-             gender = :gender,
+             genderId = (SELECT gender.id FROM gender WHERE gender.name = :gender),
              degreeCourse = :degreeCourse,
              semester = :semester,
              aboutMe = :aboutMe,
@@ -132,7 +132,7 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
 
     @Query("""
         SELECT *
-        FROM profile
+        FROM profile_image
         WHERE EXISTS (
             SELECT * 
             FROM r_rating 
@@ -144,17 +144,17 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
 
     @Query("""
         SELECT *
-        FROM profile
+        FROM profile_image
         WHERE EXISTS (
             SELECT * 
             FROM r_rating 
             WHERE r_rating.accountId = :accountId 
-            AND r_rating.ratedId = profile.accountId
+            AND r_rating.ratedId = profile_image.accountId
             AND r_rating.isLike
         ) AND EXISTS (
             SELECT * 
             FROM r_rating 
-            WHERE r_rating.accountId = profile.accountId
+            WHERE r_rating.accountId = profile_image.accountId
             AND r_rating.ratedId = :accountId
             AND r_rating.isLike
         );
