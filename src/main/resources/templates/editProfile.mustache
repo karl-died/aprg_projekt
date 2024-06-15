@@ -26,7 +26,11 @@
     </p>
     <p>
         <label for="gender">Gender</label>
-        <input type="text" id="gender" name="gender" placeholder="Gender" value="{{gender}}" required autofocus>
+        <select type="text" id="gender" name="gender" required autofocus>
+            {{#genderOptions}}
+                <option value="{{name}}" {{options}}>{{name}}</option>
+            {{/genderOptions}}
+        </select>
     </p>
     <p>
         <label for="degreeCourse">Degree Course</label>

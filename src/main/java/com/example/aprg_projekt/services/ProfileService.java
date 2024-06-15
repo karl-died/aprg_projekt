@@ -162,4 +162,8 @@ public class ProfileService {
 
         System.out.println(filePath);
     }
+
+    public List<String> getGenderOptions() {
+        return profileRepository.getGenderOptions();
+    }
 }

@@ -171,5 +171,11 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
         );
     """)
     void rate(String email, UUID ratedProfileId, boolean isLike);
+
+    @Query("""
+        SELECT name
+        FROM gender
+    """)
+    List<String> getGenderOptions();
 }
 

@@ -1,6 +1,7 @@
 package com.example.aprg_projekt.controllers;
 
 import com.example.aprg_projekt.models.Account;
+import com.example.aprg_projekt.models.GenderOption;
 import com.example.aprg_projekt.models.Profile;
 import com.example.aprg_projekt.models.ProfileDTO;
 import com.example.aprg_projekt.services.ProfileService;
@@ -14,10 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequestMapping("/profile")
@@ -48,7 +46,24 @@ public class ProfileController {
     public String editProfile(Model model, Authentication authentication) {
         Optional<Profile> profileOptional = profileService.getByEmail(authentication.getName());
 
+        List<String> genders = profileService.getGenderOptions();
+
+
+
+        List<GenderOption> genderOptions = new ArrayList<>();
+
+
+
+        model.addAttribute("genderOptions", genderOptions);
+
         if(profileOptional.isPresent()) {
+            for (String gender : genders) {
+                if(profileOptional.get().getGender().equals(gender)) {
+                    genderOptions.add(new GenderOption(gender, "selected"));
+                } else {
+                    genderOptions.add(new GenderOption(gender, ""));
+                }
+            }
             Profile profile = profileOptional.get();
             model.addAttribute("exists", true);
             model.addAttribute("firstName", profile.getFirstName());
@@ -60,6 +75,10 @@ public class ProfileController {
             model.addAttribute("semester", profile.getSemester());
             model.addAttribute("imageNames", profile.getImageNames());
         } else {
+            for (String gender : genders) {
+                genderOptions.add(new GenderOption(gender, ""));
+            }
+
             model.addAttribute("exists", false);
             model.addAttribute("firstName", "");
             model.addAttribute("lastName", "");
