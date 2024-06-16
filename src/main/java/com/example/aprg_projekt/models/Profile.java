@@ -7,6 +7,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Table("PROFILE_IMAGE")
@@ -22,6 +23,8 @@ public class Profile {
     private LocalDate dateOfBirth;
     @Column("GENDER")
     private String gender;
+    @Column("INTERESTEDIN")
+    private List<String> interestedIn;
     @Column("DEGREECOURSE")
     private String degreeCourse;
     @Column("SEMESTER")
@@ -113,6 +116,8 @@ public class Profile {
         return gender;
     }
 
+    public List<String> getInterestedIn() { return interestedIn; }
+
     public String getDegreeCourse() {
         return degreeCourse;
     }
@@ -148,6 +153,8 @@ public class Profile {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+    public void setInterestedIn(List<String> interestedIn) { this.interestedIn = interestedIn; }
 
     public void setDegreeCourse(String degreeCourse) {
         this.degreeCourse = degreeCourse;

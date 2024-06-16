@@ -35,9 +35,9 @@
     <p>
         <label for="interestedIn">Interested In</label>
         <select type="text" id="interestedIn" name="Interested In" required autofocus multiple>
-            {{#genderOptions}}
-                <option name="{{name}}" value="{{name}}">{{name}}</option>
-            {{/genderOptions}}
+            {{#interestedInOptions}}
+                <option name="{{name}}" value="{{name}}" {{options}}>{{name}}</option>
+            {{/interestedInOptions}}
         </select>
     </p>
     <p>

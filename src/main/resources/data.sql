@@ -66,8 +66,9 @@ CREATE VIEW profile_image AS
            dateOfBirth,
            gender.name AS "GENDER",
            array(
-                SELECT name
+                SELECT gender.name
                 FROM r_interested_in
+                JOIN gender ON r_interested_in.genderId = gender.id
                 WHERE r_interested_in.accountId = profile.accountId
            ) AS interestedIn,
            degreeCourse,

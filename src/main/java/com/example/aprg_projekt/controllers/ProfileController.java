@@ -43,7 +43,6 @@ public class ProfileController {
             }
         }
 
-        System.out.println(interestedIn);
         profileService.addGenderInterest(authentication.getName(), interestedIn);
         return Redirect.to("/");
     }
@@ -54,13 +53,10 @@ public class ProfileController {
 
         List<String> genders = profileService.getGenderOptions();
 
-
-
         List<GenderOption> genderOptions = new ArrayList<>();
+        List<GenderOption> interestedInOptions = new ArrayList<>();
 
 
-
-        model.addAttribute("genderOptions", genderOptions);
 
         if(profileOptional.isPresent()) {
             for (String gender : genders) {
@@ -68,6 +64,11 @@ public class ProfileController {
                     genderOptions.add(new GenderOption(gender, "selected"));
                 } else {
                     genderOptions.add(new GenderOption(gender, ""));
+                }
+                if(profileOptional.get().getInterestedIn().contains(gender)) {
+                    interestedInOptions.add(new GenderOption(gender, "selected"));
+                } else {
+                    interestedInOptions.add(new GenderOption(gender, ""));
                 }
             }
             Profile profile = profileOptional.get();
@@ -94,6 +95,9 @@ public class ProfileController {
             model.addAttribute("aboutMe", "");
             model.addAttribute("semester", "");
         }
+
+        model.addAttribute("genderOptions", genderOptions);
+        model.addAttribute("interestedInOptions", interestedInOptions);
 
 
         return "editProfile";
