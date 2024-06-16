@@ -31,9 +31,9 @@ CREATE TABLE profile (
 );
 
 CREATE TABLE r_interested_in (
-    profileId uuid REFERENCES profile(id) NOT NULL,
+    accountId uuid REFERENCES account(id) NOT NULL,
     genderId INTEGER REFERENCES gender(id) NOT NULL,
-    PRIMARY KEY(profileId, genderId)
+    PRIMARY KEY(accountId, genderId)
 );
 
 CREATE TABLE authority (
@@ -60,11 +60,16 @@ CREATE VIEW account_profile AS
     FROM account LEFT JOIN profile ON account.id = profile.accountId;
 
 CREATE VIEW profile_image AS
-    SELECT profile.id,
+    SELECT profile.id AS id,
            firstName,
            lastName,
            dateOfBirth,
-           gender.name AS "gender",
+           gender.name AS "GENDER",
+           array(
+                SELECT name
+                FROM r_interested_in
+                WHERE r_interested_in.accountId = profile.accountId
+           ) AS interestedIn,
            degreeCourse,
            aboutMe,
            semester,

@@ -56,9 +56,15 @@ public class ImageRepository {
                 WHERE r_rating.accountId = ? AND r_rating.ratedId = profile_image.accountId
             )
             AND profile_image.accountId <> ?
+            AND profile_image.gender IN (
+                SELECT gender.name
+                FROM r_interested_in
+                JOIN gender ON gender.id = r_interested_in.genderId
+                WHERE r_interested_in.accountId = ? 
+            )       
             LIMIT 1;
         """;
-        List<Profile> profile = jdbcTemplate.query(query, new Object[]{accountId, accountId}, new ProfileRowMapper());
+        List<Profile> profile = jdbcTemplate.query(query, new Object[]{accountId, accountId, accountId}, new ProfileRowMapper());
         if(profile.isEmpty()) {
             return Optional.empty();
         } else {

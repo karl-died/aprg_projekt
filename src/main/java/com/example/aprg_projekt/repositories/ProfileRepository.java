@@ -177,5 +177,27 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
         FROM gender
     """)
     List<String> getGenderOptions();
+
+    @Modifying
+    @Query("""
+        INSERT INTO r_interested_in VALUES (
+            :accountId, 
+            (SELECT id FROM gender WHERE name = :gender)
+        )
+        ON CONFLICT DO NOTHING
+    """)
+    void addGenderInterest(UUID accountId, String gender);
+
+    @Modifying
+    @Query("""
+        DELETE FROM r_interested_in 
+        WHERE EXISTS (
+            SELECT *
+            FROM r_interested_in
+            JOIN gender ON r_interested_in.genderId = gender.id
+            WHERE accountId = :accountId AND gender.name = :gender
+    )
+    """)
+    void removeGenderInterest(UUID accountId, String gender);
 }
 

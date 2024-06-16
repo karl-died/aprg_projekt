@@ -31,6 +31,7 @@ public class ProfileController {
     @PostMapping("/save")
     public String saveProfile(@ModelAttribute Profile profile,
                               @RequestParam(name = "image") MultipartFile image,
+                              @RequestParam(name = "Interested In") List<String> interestedIn,
                               Authentication authentication) {
         profileService.save(authentication.getName(), profile);
         try {
@@ -39,6 +40,9 @@ public class ProfileController {
             e.printStackTrace();
             System.out.println("error");
         }
+
+        System.out.println(interestedIn);
+        profileService.addGenderInterest(authentication.getName(), interestedIn);
         return Redirect.to("/");
     }
 

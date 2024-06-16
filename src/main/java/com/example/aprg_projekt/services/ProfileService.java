@@ -68,6 +68,8 @@ public class ProfileService {
         }
     }
 
+
+
     public List<Profile> getNonRatedProfiles(String email) {
         Optional<Account> account = accountRepository.findByEmail(email);
         if(!account.isPresent()) {
@@ -165,5 +167,20 @@ public class ProfileService {
 
     public List<String> getGenderOptions() {
         return profileRepository.getGenderOptions();
+    }
+
+    public void addGenderInterest(String email, List<String> selectedGenders) {
+        List<String> genders = profileRepository.getGenderOptions();
+        Optional<Account> account = accountRepository.findByEmail(email);
+
+        if(account.isPresent()) {
+            for (String gender : genders) {
+                if (selectedGenders.contains(gender)) {
+                    profileRepository.addGenderInterest(account.get().getId(), gender);
+                } else {
+                    profileRepository.removeGenderInterest(account.get().getId(), gender);
+                }
+            }
+        }
     }
 }
