@@ -34,11 +34,13 @@ public class ProfileController {
                               @RequestParam(name = "Interested In") List<String> interestedIn,
                               Authentication authentication) {
         profileService.save(authentication.getName(), profile);
-        try {
-            profileService.addImage(authentication.getName(), image);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("error");
+        if(!image.isEmpty()) {
+            try {
+                profileService.addImage(authentication.getName(), image);
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("error");
+            }
         }
 
         System.out.println(interestedIn);
