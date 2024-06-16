@@ -193,11 +193,14 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
         DELETE FROM r_interested_in 
         WHERE EXISTS (
             SELECT *
-            FROM r_interested_in
-            JOIN gender ON r_interested_in.genderId = gender.id
-            WHERE accountId = :accountId AND gender.name = :gender
+            FROM gender
+            WHERE r_interested_in.accountId = :accountId 
+            AND r_interested_in.genderId = gender.id 
+            AND gender.name = :gender
     )
     """)
     void removeGenderInterest(UUID accountId, String gender);
+
+
 }
 
