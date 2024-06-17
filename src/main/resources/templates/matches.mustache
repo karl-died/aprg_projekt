@@ -3,14 +3,22 @@
 
 <h1>Matches</h1>
 
-{{#profiles}}
-    <h3>{{name}}, {{age}}</h3>
-    <p><a href="../chat/with?profileId={{id}}">Chat</a></p>
-    <br/>
-{{/profiles}}
+{{#matches}}
+    <img src="../images/{{profilePictureName}}" width="50">
+    <h3><a href="../chat/with?profileId={{id}}">{{name}}, {{age}}</a></h3>
+    <p></p>
+{{/matches}}
+</br>
+{{#chats}}
+    <img src="../images/{{profilePictureName}}" width="50">
+    <h3><a href="../chat/with?profileId={{id}}">{{name}}, {{age}}</a></h3>
+    <p>{{lastChatMessage.message}}</p>
+{{/chats}}
 
-{{^profiles}}
-    <p>Looks you don't have andy matches yet!</p>
-{{/profiles}}
+{{^matches}}
+    {{^chats}}
+        <p>Looks you don't have any matches yet!</p>
+    {{/chats}}
+{{/matches}}
 
 {{>layout/footer}}

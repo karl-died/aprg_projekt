@@ -132,11 +132,17 @@ public class ProfileController {
     public String showMatches(Model model, Authentication authentication) {
         if (authentication.getPrincipal() instanceof Account account) {
             List<Profile> likedProfiles = profileService.getMatches(account.getEmail());
-            List<ProfileDTO> displayProfiles = new ArrayList<>();
+            List<ProfileDTO> matches = new ArrayList<>();
+            List<ProfileDTO> chats = new ArrayList<>();
             for (Profile profile : likedProfiles) {
-                displayProfiles.add(new ProfileDTO(profile));
+                if(profile.getLastChatMessage() == null) {
+                    matches.add(new ProfileDTO(profile));
+                } else {
+                    chats.add(new ProfileDTO(profile));
+                }
             }
-            model.addAttribute("profiles", displayProfiles);
+            model.addAttribute("matches", matches);
+            model.addAttribute("chats", chats);
         }
         return "matches";
     }

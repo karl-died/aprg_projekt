@@ -17,6 +17,8 @@ public class ProfileDTO {
     private Integer semester;
     private String aboutMe;
     private List<String> imageNames;
+    private String profilePictureName;
+    private ChatMessage lastChatMessage;
 
     public ProfileDTO() {}
 
@@ -28,9 +30,11 @@ public class ProfileDTO {
         this.degreeCourse = profile.getDegreeCourse();
         this.semester = profile.getSemester();
         this.aboutMe = profile.getAboutMe();
+        this.profilePictureName = profile.getProfilePicture();
         if(profile.getImageNames() != null) {
             this.imageNames = Arrays.asList(profile.getImageNames());
         }
+        this.lastChatMessage = profile.getLastChatMessage();
     }
 
     public UUID getId() {
@@ -61,6 +65,10 @@ public class ProfileDTO {
         return aboutMe;
     }
 
+    public String getProfilePictureName() { return profilePictureName; }
+
+    public ChatMessage getLastChatMessage() { return lastChatMessage; }
+
     public void setId(UUID id) {
         this.id = id;
     }
@@ -88,4 +96,8 @@ public class ProfileDTO {
     public void setAboutMe(String aboutMe) {
         this.aboutMe = aboutMe;
     }
+
+    public void setProfilePictureName(String profilePictureName) { this.profilePictureName = profilePictureName; }
+
+    public void setLastChatMessage(ChatMessage lastChatMessage) { this.lastChatMessage = lastChatMessage; }
 }

@@ -2,8 +2,10 @@ package com.example.aprg_projekt.services;
 
 
 import com.example.aprg_projekt.models.Account;
+import com.example.aprg_projekt.models.ChatMessage;
 import com.example.aprg_projekt.models.Profile;
 import com.example.aprg_projekt.repositories.AccountRepository;
+import com.example.aprg_projekt.repositories.ChatRepository;
 import com.example.aprg_projekt.repositories.ImageRepository;
 import com.example.aprg_projekt.repositories.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ public class ProfileService {
     private ImageRepository imageRepository;
 
     String uploadDirectory = "uploads/";
+    @Autowired
+    private ChatRepository chatRepository;
 
     public Optional<Profile> getById(UUID id) {
         Optional<Profile> profile = profileRepository.findById(id);
@@ -123,6 +127,10 @@ public class ProfileService {
 
         UUID id = account.get().getId();
         List<Profile> profiles = profileRepository.getMatches(id);
+        for(Profile profile : profiles) {
+            List<ChatMessage> messages = chatRepository.getChatMessages(email, profile.getId());
+            profile.setLastChatMessage(messages.getLast());
+        }
         return profiles;
     }
 

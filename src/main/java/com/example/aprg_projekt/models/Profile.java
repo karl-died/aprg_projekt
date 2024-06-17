@@ -2,7 +2,9 @@ package com.example.aprg_projekt.models;
 
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
@@ -35,6 +37,9 @@ public class Profile {
     private String profilePicture;
     @Column("IMAGENAMES")
     private String[] imageNames;
+    @Transient
+    private ChatMessage lastChatMessage;
+
 
     public Profile() {
 
@@ -134,6 +139,8 @@ public class Profile {
 
     public String[] getImageNames() { return imageNames; }
 
+    public ChatMessage getLastChatMessage() { return lastChatMessage; }
+
     public void setId(UUID id) {
         this.id = id;
     }
@@ -171,6 +178,8 @@ public class Profile {
     public void setProfilePicture(String profilePicture) { this.profilePicture = profilePicture; }
 
     public void setImageNames(String[] imageNames) { this.imageNames = imageNames; }
+
+    public void setLastChatMessage(ChatMessage lastMessage) { this.lastChatMessage = lastMessage; }
 
     @Override
     public String toString() {
