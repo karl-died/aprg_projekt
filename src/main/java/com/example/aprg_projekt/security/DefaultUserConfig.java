@@ -6,6 +6,7 @@ import com.example.aprg_projekt.models.Role;
 import com.example.aprg_projekt.repositories.AccountRepository;
 import com.example.aprg_projekt.repositories.ChatRepository;
 import com.example.aprg_projekt.repositories.ProfileRepository;
+import com.example.aprg_projekt.services.ProfileService;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -27,8 +28,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Configuration
 class DefaultUserConfig {
@@ -64,7 +64,7 @@ class DefaultUserConfig {
      * @see <a href="https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/index.html"></a>
      */
     @Bean
-    CommandLineRunner onApplicationStart() {
+    CommandLineRunner onApplicationStart(ProfileService profileService) {
         return _ -> {
             Path filePath = UPLOAD_DIRECTORY.resolve("");
             try {
@@ -78,13 +78,9 @@ class DefaultUserConfig {
             ResourcePatternResolver resourcePatResolver = new PathMatchingResourcePatternResolver();
             Resource[] directory = resourcePatResolver.getResources("classpath:static/assets/defaultImages/*");
             for(Resource resource : directory) {
-                System.out.println(resource.getFilename() + ", " + resource.isFile());
                 Path picPath = UPLOAD_DIRECTORY.resolve(resource.getFilename());
                 Files.copy(resource.getInputStream(), picPath);
             }
-
-
-
 
             addAccountToDatabaseOnce("user@haw-hamburg.de", "user", Role.USER);
             addAccountToDatabaseOnce("admin@haw-hamburg.de", "admin", Role.USER, Role.ADMIN);
@@ -106,12 +102,14 @@ class DefaultUserConfig {
             addProfileToDatabaseOnce("jana@haw-hamburg.de", new Profile(UUID.randomUUID(),"Jana", "Schmidt", LocalDate.parse("2001-03-03"), "FEMALE", "Media Systems", 4, "Hallo ich bin Jana", "default_pfp_5.png", new String[] {"default_pic_5.jpeg"}));
             addProfileToDatabaseOnce("dani@haw-hamburg.de", new Profile(UUID.randomUUID(),"Dani", "Schmidt", LocalDate.parse("2001-03-03"), "DIVERSE", "Media Systems", 4, "Hallo ich bin Dani", "default_pfp_6.png", new String[] {"default_pic_6.jpeg"}));
 
-            profileRepository.addImage("sara@haw-hamburg.de", "51921234-b982-4c3c-9938-a976241c8c2cScreenshot 2024-05-07 at 18.53.51.png");
+
             Optional<Profile> laraProfile = profileRepository.findByEmail("lara@haw-hamburg.de");
             Optional<Profile> saraProfile = profileRepository.findByEmail("sara@haw-hamburg.de");
 
             profileRepository.rate("lara@haw-hamburg.de", saraProfile.get().getId(), true);
             profileRepository.rate("sara@haw-hamburg.de", laraProfile.get().getId(), true);
+
+            profileService.addGenderInterest("sara@haw-hamburg.de", Arrays.asList(new String[]{"MALE", "FEMALE"}));
 
             chatRepository.postMessage("lara@haw-hamburg.de", saraProfile.get().getId(), "Hallo ich bin Lara!", LocalDateTime.now().minus(10, ChronoUnit.MINUTES));
             chatRepository.postMessage("sara@haw-hamburg.de", laraProfile.get().getId(), "Hallo!", LocalDateTime.now().minus(2, ChronoUnit.MINUTES));
