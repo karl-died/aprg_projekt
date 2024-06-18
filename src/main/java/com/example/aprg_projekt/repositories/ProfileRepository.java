@@ -206,7 +206,7 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
     @Query("""
         UPDATE profile
         SET profilePictureName = :profilePictureName
-        WHERE accountId = (SELECT account_profile.profileId FROM account_profile WHERE account_profile.email = :email)
+        WHERE profile.accountId = (SELECT account_profile.accountId FROM account_profile WHERE account_profile.email = :email)
     """)
     void updateProfilePicture(String email, String profilePictureName);
 }

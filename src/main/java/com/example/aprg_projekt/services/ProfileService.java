@@ -134,7 +134,9 @@ public class ProfileService {
         List<Profile> profiles = profileRepository.getMatches(id);
         for(Profile profile : profiles) {
             List<ChatMessage> messages = chatRepository.getChatMessages(email, profile.getId());
-            profile.setLastChatMessage(messages.getLast());
+            if(!messages.isEmpty()) {
+                profile.setLastChatMessage(messages.getLast());
+            }
         }
         return profiles;
     }
@@ -176,6 +178,7 @@ public class ProfileService {
             Files.copy(image.getInputStream(), filePath);
             for(String imageName: profile.get().getImageNames()) {
                 Files.delete(UPLOAD_DIRECTORY.resolve(imageName));
+                System.out.println(imageName);
             }
 
             imageRepository.removeImages(email);
@@ -185,17 +188,26 @@ public class ProfileService {
 
     public void updateProfilePicture(String email, MultipartFile image) throws IOException {
         Optional<Profile> profile = profileRepository.findByEmail(email);
+        System.out.println(image.getOriginalFilename());
         if(profile.isPresent()) {
             String uniqueFileName = UUID.randomUUID().toString() + image.getOriginalFilename();
             Path filePath = UPLOAD_DIRECTORY.resolve(uniqueFileName);
+            System.out.println(uniqueFileName);
+
 
             if(!Files.exists(UPLOAD_DIRECTORY)) {
                 Files.createDirectories(UPLOAD_DIRECTORY);
             }
 
             Files.copy(image.getInputStream(), filePath);
-            Files.delete(UPLOAD_DIRECTORY.resolve(profile.get().getProfilePicture()));
-
+            try {
+                String profilePictureName = profile.get().getProfilePicture();
+                if(profilePictureName != null) {
+                    Files.delete(UPLOAD_DIRECTORY.resolve(profilePictureName));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             profileRepository.updateProfilePicture(email, uniqueFileName);
         }
 

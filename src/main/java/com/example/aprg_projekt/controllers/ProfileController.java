@@ -31,15 +31,25 @@ public class ProfileController {
     @PostMapping("/save")
     public String saveProfile(@ModelAttribute Profile profile,
                               @RequestParam(name = "image") MultipartFile image,
+                              @RequestParam(name = "pfp") MultipartFile profilePicture,
                               @RequestParam(name = "Interested In") List<String> interestedIn,
                               Authentication authentication) {
         profileService.save(authentication.getName(), profile);
+
         if(!image.isEmpty()) {
             try {
                 profileService.addImage(authentication.getName(), image);
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("error");
+            }
+        }
+
+        System.out.println(profilePicture.getOriginalFilename() + ", " + profilePicture.getSize());
+        if(!profilePicture.isEmpty()) {
+            try {
+                profileService.updateProfilePicture(authentication.getName(), profilePicture);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 
@@ -81,9 +91,11 @@ public class ProfileController {
             model.addAttribute("aboutMe", profile.getAboutMe());
             model.addAttribute("semester", profile.getSemester());
             model.addAttribute("imageNames", profile.getImageNames());
+            model.addAttribute("profilePicture", profile.getProfilePicture());
         } else {
             for (String gender : genders) {
                 genderOptions.add(new GenderOption(gender, ""));
+                interestedInOptions.add(new GenderOption(gender, ""));
             }
 
             model.addAttribute("exists", false);

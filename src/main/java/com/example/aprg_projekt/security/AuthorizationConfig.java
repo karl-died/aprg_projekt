@@ -26,11 +26,9 @@ class AuthorizationConfig {
         var loginEndpoint = "/login";
         http.formLogin(form -> form // Customized login page.
                 .loginPage(loginEndpoint)
-                // This failure handler inserts an error-flag parameter into the
-                // login-url when a user login attempt has failed. This is needed to show an
-                // error message in the custom login form.
                 .failureHandler(new SimpleUrlAuthenticationFailureHandler(loginEndpoint + "?error=true"))
-                .permitAll());
+                .permitAll()
+        );
 
         http.logout(logout -> logout
                 .logoutUrl("/logout")

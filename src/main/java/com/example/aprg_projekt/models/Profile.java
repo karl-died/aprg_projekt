@@ -8,6 +8,7 @@ import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -26,7 +27,7 @@ public class Profile {
     @Column("GENDER")
     private String gender;
     @Column("INTERESTEDIN")
-    private List<String> interestedIn;
+    private List<String> interestedIn = new ArrayList<>();
     @Column("DEGREECOURSE")
     private String degreeCourse;
     @Column("SEMESTER")

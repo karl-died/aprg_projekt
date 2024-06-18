@@ -6,11 +6,23 @@ import com.example.aprg_projekt.models.Role;
 import com.example.aprg_projekt.repositories.AccountRepository;
 import com.example.aprg_projekt.repositories.ChatRepository;
 import com.example.aprg_projekt.repositories.ProfileRepository;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.UrlResource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -26,14 +38,21 @@ class DefaultUserConfig {
     private final ProfileRepository profileRepository;
     private final ChatRepository chatRepository;
 
+    private ResourceLoader resourceLoader;
+
+    private static final Path UPLOAD_DIRECTORY = Paths.get("uploads/");
+    private static final Path STATIC_DIRECTORY = Paths.get("classpath:static/");
+
     DefaultUserConfig(AccountRepository accountRepository,
                       PasswordEncoder passwordEncoder,
                       ProfileRepository profileRepository,
-                      ChatRepository chatRepository) {
+                      ChatRepository chatRepository,
+                      ResourceLoader resourceLoader) {
         this.accountRepository = accountRepository;
         this.passwordEncoder = passwordEncoder;
         this.profileRepository = profileRepository;
         this.chatRepository = chatRepository;
+        this.resourceLoader = resourceLoader;
     }
 
     /**
@@ -47,6 +66,26 @@ class DefaultUserConfig {
     @Bean
     CommandLineRunner onApplicationStart() {
         return _ -> {
+            Path filePath = UPLOAD_DIRECTORY.resolve("");
+            try {
+                FileUtils.deleteDirectory(new File(filePath.toString()));
+            } catch (IOException e) {}
+
+            if (!Files.exists(UPLOAD_DIRECTORY)) {
+                Files.createDirectories(UPLOAD_DIRECTORY);
+            }
+
+            ResourcePatternResolver resourcePatResolver = new PathMatchingResourcePatternResolver();
+            Resource[] directory = resourcePatResolver.getResources("classpath:static/assets/defaultImages/*");
+            for(Resource resource : directory) {
+                System.out.println(resource.getFilename() + ", " + resource.isFile());
+                Path picPath = UPLOAD_DIRECTORY.resolve(resource.getFilename());
+                Files.copy(resource.getInputStream(), picPath);
+            }
+
+
+
+
             addAccountToDatabaseOnce("user@haw-hamburg.de", "user", Role.USER);
             addAccountToDatabaseOnce("admin@haw-hamburg.de", "admin", Role.USER, Role.ADMIN);
             addAccountToDatabaseOnce("sara@haw-hamburg.de", "sara", Role.USER);
@@ -58,14 +97,14 @@ class DefaultUserConfig {
             addAccountToDatabaseOnce("jana@haw-hamburg.de", "jana", Role.USER);
             addAccountToDatabaseOnce("dani@haw-hamburg.de", "dani", Role.USER);
 
-            addProfileToDatabaseOnce("sara@haw-hamburg.de", new Profile(UUID.randomUUID(),"Sara", "Müller", LocalDate.parse("2001-01-01"), "FEMALE", "Media Systems", 3, "Hallo ich bin Sara", "logo.png", new String[] {"logo.png"}));
-            addProfileToDatabaseOnce("lara@haw-hamburg.de", new Profile("Lara", "Meyer", LocalDate.parse("2000-01-01"), "FEMALE", "Kommunikationsdesign", 5, "Hallo ich bin Lara"));
-            addProfileToDatabaseOnce("tamara@haw-hamburg.de", new Profile("Tamara", "Schmidt", LocalDate.parse("2002-03-03"), "FEMALE", "Media Systems", 6, "Hallo ich bin Tamara"));
-            addProfileToDatabaseOnce("olli@haw-hamburg.de", new Profile("Olli", "Schmidt", LocalDate.parse("2003-03-03"), "MALE", "Angewandte Informatik", 2, "Hallo ich bin Olli"));
-            addProfileToDatabaseOnce("lukas@haw-hamburg.de", new Profile("Lukas", "Schmidt", LocalDate.parse("2002-03-03"), "MALE", "Media Systems", 1, "Hallo ich bin Lukas"));
-            addProfileToDatabaseOnce("tim@haw-hamburg.de", new Profile("Tim", "Schmidt", LocalDate.parse("2002-03-03"), "MALE", "Media Systems", 3, "Hallo ich bin Tim"));
-            addProfileToDatabaseOnce("jana@haw-hamburg.de", new Profile("Jana", "Schmidt", LocalDate.parse("2001-03-03"), "FEMALE", "Media Systems", 4, "Hallo ich bin Jana"));
-            addProfileToDatabaseOnce("dani@haw-hamburg.de", new Profile("Dani", "Schmidt", LocalDate.parse("2001-03-03"), "DIVERSE", "Media Systems", 4, "Hallo ich bin Dani"));
+            addProfileToDatabaseOnce("sara@haw-hamburg.de", new Profile(UUID.randomUUID(),"Sara", "Müller", LocalDate.parse("2001-01-01"), "FEMALE", "Media Systems", 3, "Hallo ich bin Sara", "default_pfp_1.png", new String[] {"default_pic_1.jpeg"}));
+            addProfileToDatabaseOnce("lara@haw-hamburg.de", new Profile(UUID.randomUUID(),"Lara", "Meyer", LocalDate.parse("2000-01-01"), "FEMALE", "Kommunikationsdesign", 5, "Hallo ich bin Lara", "default_pfp_2.png", new String[] {"default_pic_2.jpeg"}));
+            addProfileToDatabaseOnce("tamara@haw-hamburg.de", new Profile(UUID.randomUUID(),"Tamara", "Schmidt", LocalDate.parse("2002-03-03"), "FEMALE", "Media Systems", 6, "Hallo ich bin Tamara", "default_pfp_3.png", new String[] {"default_pic_3.jpeg"}));
+            addProfileToDatabaseOnce("olli@haw-hamburg.de", new Profile(UUID.randomUUID(),"Olli", "Schmidt", LocalDate.parse("2003-03-03"), "MALE", "Angewandte Informatik", 2, "Hallo ich bin Olli", "default_pfp_7.png", new String[] {"default_pic_7.jpeg"}));
+            addProfileToDatabaseOnce("lukas@haw-hamburg.de", new Profile(UUID.randomUUID(),"Lukas", "Schmidt", LocalDate.parse("2002-03-03"), "MALE", "Media Systems", 1, "Hallo ich bin Lukas", "default_pfp_4.png", new String[] {"default_pic_4.jpeg"}));
+            addProfileToDatabaseOnce("tim@haw-hamburg.de", new Profile(UUID.randomUUID(),"Tim", "Schmidt", LocalDate.parse("2002-03-03"), "MALE", "Media Systems", 3, "Hallo ich bin Tim", "default_pfp_8.png", new String[] {"default_pic_8.jpeg"}));
+            addProfileToDatabaseOnce("jana@haw-hamburg.de", new Profile(UUID.randomUUID(),"Jana", "Schmidt", LocalDate.parse("2001-03-03"), "FEMALE", "Media Systems", 4, "Hallo ich bin Jana", "default_pfp_5.png", new String[] {"default_pic_5.jpeg"}));
+            addProfileToDatabaseOnce("dani@haw-hamburg.de", new Profile(UUID.randomUUID(),"Dani", "Schmidt", LocalDate.parse("2001-03-03"), "DIVERSE", "Media Systems", 4, "Hallo ich bin Dani", "default_pfp_6.png", new String[] {"default_pic_6.jpeg"}));
 
             profileRepository.addImage("sara@haw-hamburg.de", "51921234-b982-4c3c-9938-a976241c8c2cScreenshot 2024-05-07 at 18.53.51.png");
             Optional<Profile> laraProfile = profileRepository.findByEmail("lara@haw-hamburg.de");
@@ -106,5 +145,8 @@ class DefaultUserConfig {
                 profile.getAboutMe(),
                 profile.getProfilePicture()
         );
+        if(profile.getImageNames().length > 0) {
+            profileRepository.addImage(email, profile.getImageNames()[0]);
+        }
     }
 }
