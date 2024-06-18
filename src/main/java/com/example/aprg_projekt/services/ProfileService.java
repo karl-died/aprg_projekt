@@ -9,14 +9,18 @@ import com.example.aprg_projekt.repositories.ChatRepository;
 import com.example.aprg_projekt.repositories.ImageRepository;
 import com.example.aprg_projekt.repositories.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Service
@@ -29,7 +33,8 @@ public class ProfileService {
     @Autowired
     private ImageRepository imageRepository;
 
-    String uploadDirectory = "uploads/";
+    private static final Path UPLOAD_DIRECTORY = Paths.get("uploads/");
+
     @Autowired
     private ChatRepository chatRepository;
 
@@ -159,18 +164,55 @@ public class ProfileService {
     }
 
     public void addImage(String email, MultipartFile image) throws IOException {
-        String uniqueFileName = UUID.randomUUID().toString() + image.getOriginalFilename();
-        Path uploadPath = Path.of(this.uploadDirectory);
-        Path filePath = uploadPath.resolve(uniqueFileName);
+        Optional<Profile> profile = profileRepository.findByEmail(email);
+        if(profile.isPresent()) {
+            String uniqueFileName = UUID.randomUUID().toString() + image.getOriginalFilename();
+            Path filePath = UPLOAD_DIRECTORY.resolve(uniqueFileName);
 
-        if(!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
+            if (!Files.exists(UPLOAD_DIRECTORY)) {
+                Files.createDirectories(UPLOAD_DIRECTORY);
+            }
+
+            Files.copy(image.getInputStream(), filePath);
+            for(String imageName: profile.get().getImageNames()) {
+                Files.delete(UPLOAD_DIRECTORY.resolve(imageName));
+            }
+
+            imageRepository.removeImages(email);
+            profileRepository.addImage(email, uniqueFileName);
+        }
+    }
+
+    public void updateProfilePicture(String email, MultipartFile image) throws IOException {
+        Optional<Profile> profile = profileRepository.findByEmail(email);
+        if(profile.isPresent()) {
+            String uniqueFileName = UUID.randomUUID().toString() + image.getOriginalFilename();
+            Path filePath = UPLOAD_DIRECTORY.resolve(uniqueFileName);
+
+            if(!Files.exists(UPLOAD_DIRECTORY)) {
+                Files.createDirectories(UPLOAD_DIRECTORY);
+            }
+
+            Files.copy(image.getInputStream(), filePath);
+            Files.delete(UPLOAD_DIRECTORY.resolve(profile.get().getProfilePicture()));
+
+            profileRepository.updateProfilePicture(email, uniqueFileName);
         }
 
-        Files.copy(image.getInputStream(), filePath);
-        profileRepository.addImage(email, uniqueFileName);
+    }
 
-        System.out.println(filePath);
+    public Resource loadImage(String filename) {
+        try {
+            Path file = UPLOAD_DIRECTORY.resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() && resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("Could not read file: " + filename);
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<String> getGenderOptions() {

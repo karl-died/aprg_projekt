@@ -23,27 +23,10 @@ public class ImageRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public String[] getImages(String email) {
-        String query = """
-            SELECT name
-            FROM image
-            WHERE image.profileId = (SELECT account_profile.profileId from account_profile WHERE email = ?);
-        """;
-        List<String> images = jdbcTemplate.query(query, new Object[]{email}, new RowMapper<String>() {
-            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return rs.toString();
-            }
-        });
-        return images.toArray(new String[images.size()]);
-    }
+    public void removeImages(String email) {
+        String sql = "DELETE FROM image WHERE profileId = (SELECT account_profile.profileId FROM account_profile WHERE account_profile.email = ?)";
 
-    public Optional<Profile> findProfileByEmail(String email) {
-        String query= """
-                SELECT *
-                FROM profile_image
-                WHERE accountId = (SELECT account.id FROM account WHERE account.email = ?)
-        """;
-        return Optional.ofNullable(jdbcTemplate.queryForObject(query, new Object[]{email}, new ProfileRowMapper()));
+        jdbcTemplate.update(sql, new Object[]{email});
     }
 
     public Optional<Profile> getOneNonRatedProfile(UUID accountId) {

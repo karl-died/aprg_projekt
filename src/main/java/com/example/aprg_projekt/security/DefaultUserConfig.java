@@ -58,7 +58,7 @@ class DefaultUserConfig {
             addAccountToDatabaseOnce("jana@haw-hamburg.de", "jana", Role.USER);
             addAccountToDatabaseOnce("dani@haw-hamburg.de", "dani", Role.USER);
 
-            addProfileToDatabaseOnce("sara@haw-hamburg.de", new Profile(UUID.randomUUID(),"Sara", "Müller", LocalDate.parse("2001-01-01"), "FEMALE", "Media Systems", 3, "Hallo ich bin Sara", "profilePic.jpg", new String[] {}));
+            addProfileToDatabaseOnce("sara@haw-hamburg.de", new Profile(UUID.randomUUID(),"Sara", "Müller", LocalDate.parse("2001-01-01"), "FEMALE", "Media Systems", 3, "Hallo ich bin Sara", "logo.png", new String[] {"logo.png"}));
             addProfileToDatabaseOnce("lara@haw-hamburg.de", new Profile("Lara", "Meyer", LocalDate.parse("2000-01-01"), "FEMALE", "Kommunikationsdesign", 5, "Hallo ich bin Lara"));
             addProfileToDatabaseOnce("tamara@haw-hamburg.de", new Profile("Tamara", "Schmidt", LocalDate.parse("2002-03-03"), "FEMALE", "Media Systems", 6, "Hallo ich bin Tamara"));
             addProfileToDatabaseOnce("olli@haw-hamburg.de", new Profile("Olli", "Schmidt", LocalDate.parse("2003-03-03"), "MALE", "Angewandte Informatik", 2, "Hallo ich bin Olli"));

@@ -42,7 +42,7 @@ class AuthorizationConfig {
                 .requestMatchers("/admin").hasAuthority(Role.ADMIN) // This endpoint is only available for users with the ROLE_ADMIN.
                 .requestMatchers("/styles.css").permitAll()
                 .requestMatchers("/static/**").anonymous()
-                .requestMatchers("/images/**").permitAll()
+                .requestMatchers("/images/**").authenticated()
                 .requestMatchers("/register").anonymous()
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/login").anonymous()

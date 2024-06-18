@@ -202,5 +202,12 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
     void removeGenderInterest(UUID accountId, String gender);
 
 
+    @Modifying
+    @Query("""
+        UPDATE profile
+        SET profilePictureName = :profilePictureName
+        WHERE accountId = (SELECT account_profile.profileId FROM account_profile WHERE account_profile.email = :email)
+    """)
+    void updateProfilePicture(String email, String profilePictureName);
 }
 
