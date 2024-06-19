@@ -1,38 +1,131 @@
 body {
-    background-color: lightblue;
+    background: linear-gradient(#B6E5FF, #A6DEF0, #A3DEFF, #75CFEB, #52C4E9);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     text-align: center
 }
 
-h2 {
-    color: Black;
-    font-family: jaldi;
+h1 {
+    text-align: center
 }
 
 p {
-    font-family: jaldi;
-    font-size: 20px;
-    color: Black;
+
 }
-button {
+#loginButton {
     background-color: #2B2828;
     border-radius: 12px;
     color: white;
-    padding: 14px 40px;
+    padding: 15px 50px;
     text-decoration: none;
     display: inline-block;
-    font-size: 12px;
     font-family: jaldi;
     transition-duration: 0.4s;
+    text-align: center;
+    border: 2px solid #04AA6D;
+    font-size: 12px;
+    width: 10%;
 }
-button:hover {
+#loginButton:hover {
     background-color: #04AA6D; /* Green */
     color: white;
 }
-
+#registerButton {
+    background-color: #2B2828;
+    border-radius: 12px;
+    color: white;
+    padding: 15px 50px;
+    text-decoration: none;
+    display: inline-block;
+    font-family: jaldi;
+    transition-duration: 0.4s;
+    text-align: center;
+    border: 2px solid #04AA6D;
+    font-size: 12px;
+    width: 10%;
+}
+#registerButton:hover {
+    background-color: #04AA6D; /* Green */
+    color: white;
+}
+#logoutButton {
+    background-color: #2B2828;
+    border-radius: 12px;
+    color: white;
+    padding: 15px 50px;
+    text-decoration: none;
+    display: inline-block;
+    font-family: jaldi;
+    transition-duration: 0.4s;
+    text-align: center;
+    border: 2px solid #04AA6D;
+    font-size: 12px;
+    width: 10%;
+}
+#logoutButton:hover {
+    background-color: #04AA6D; /* Green */
+    color: white;
+}
 input{
     border-radius: 12px;
     outline: none;
     padding: 10px;
     font-family: jaldi;
+
+}
+img{
+    border-radius: 12px;
+}
+
+a:link, a:visited {
+    background-color: #2B2828;
+    border-radius: 12px;
+    color: white;
+    padding: 15px 50px;
+    text-decoration: none;
+    display: inline-block;
+    font-family: jaldi;
+    transition-duration: 0.4s;
+    text-align: center;
+    border: 2px solid #04AA6D;
+    font-size: 12px;
+    width: 10%;
+
+}
+
+a:hover, a:active {
+    background-color: #04AA6D; /* Green */
+    color: white;
+}
+li{
+    display: inline;
+}
+
+#Love{
+    border-radius: 50%;
+    outline: none;
+    padding: 25px;
+    font-family: jaldi;
+    background-color: #f44336;
+    transition-duration: 0.4s;
+    border: 1px solid black;
+}
+#Love:hover{
+    background-color: hotpink;
+
+}
+#Hate{
+    border-radius: 50%;
+    outline: none;
+    padding: 25px;
+    font-family: jaldi;
+    background-color: dimgray;
+    transition-duration: 0.4s;
+    border: 1px solid white;
+    color: white;
+}
+#Hate:hover{
+    background-color: white;
+    color: black;
 
 }

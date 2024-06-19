@@ -12,10 +12,12 @@
 {{/authenticated}}
 
 {{#authenticated}}
-    <p><a href="./rate">Rate</a></p>
-    <p><a href="./profile/likes">Likes</a></p>
-    <p><a href="./profile/matches">Matches</a></p>
-    <p><a href="./profile/edit">Edit Profile</a></p>
+    <ul>
+        <li><a href="./rate" style="display:inline-block;">Rate</a></li>
+        <li><a href="./profile/likes" style="display:inline-block;">Likes</a></li>
+        <li><a href="./profile/matches" style="display:inline-block;">Matches</a></li>
+        <li><a href="./profile/edit" style="display:inline-block;">Edit Profile</a></li>
+    </ul>
     {{>snippet/logoutLink}}
 {{/authenticated}}
 
