@@ -4,14 +4,18 @@
 <h1>Matches</h1>
 
 {{#matches}}
-    <img src="../images/{{profilePictureName}}" width="50">
-    <h3><a href="../chat/with?profileId={{id}}">{{name}}, {{age}}</a></h3>
+    {{#profilePictureName}}
+        <img src="../images/{{.}}" width="50">
+    {{/profilePictureName}}
+    <h3><a href="../chat/with?profileId={{id}}">{{name}}</a></h3>
     <p></p>
 {{/matches}}
 </br>
 {{#chats}}
-    <img src="../images/{{profilePictureName}}" width="50">
-    <h3><a href="../chat/with?profileId={{id}}">{{name}}, {{age}}</a></h3>
+    {{#profilePictureName}}
+        <img src="../images/{{.}}" width="50">
+    {{/profilePictureName}}
+    <h3><a href="../chat/with?profileId={{id}}">{{name}}</a></h3>
     <p>{{lastChatMessage.message}}</p>
 {{/chats}}
 
