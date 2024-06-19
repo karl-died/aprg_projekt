@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
-@RequestMapping("/profile")
+@RequestMapping
 public class ProfileController {
 
     private final ProfileService profileService;
@@ -81,17 +81,7 @@ public class ProfileController {
         return "editProfile";
     }
 
-    @GetMapping("/")
-    public String showProfile(Model model, @RequestParam(name = "profileId") UUID profileId, Authentication authentication) {
-        if(!profileService.isAllowedToViewProfile(authentication.getName(), profileId)) {
-            return Redirect.to("/");
-        }
-        Optional<Profile> profileOptional = profileService.getById(profileId);
-        if(profileOptional.isPresent()) {
-            model.addAttribute("profile", new ProfileDTO(profileOptional.get()));
-        }
-        return "viewProfile";
-    }
+
 
 
 
@@ -130,8 +120,4 @@ public class ProfileController {
         return "matches";
     }
 
-    @GetMapping("/logout")
-    public String logout(){
-        return Redirect.to("/logout");
-    }
 }
