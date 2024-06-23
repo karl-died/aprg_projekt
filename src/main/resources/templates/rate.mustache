@@ -1,30 +1,34 @@
 {{>layout/header}}
-{{>snippet/nav}}
 
-<h2>Rate Profiles</h2>
-    <div id="container">
-        {{#profiles}}
-            {{#imageNames}}
-                    <img src="./images/{{.}}" width="300">
-            {{/imageNames}}
-            <div id="NameAge">{{name}}, {{age}}</div>
-            <p>{{degreeCourse}}</p>
-            <p>{{semester}}. Semester</p>
-            <h4>About Me:</h4>
-            <p>{{aboutMe}}</p>
-            <form  method="post" action="./rate?profileId={{id}}&isLike=true">
-                <input id="Love" type="submit" value="Like">
+
+
+{{#profiles}}
+
+    <div id="ImageContainer">
+      {{#imageNames}}
+              <img id="RateImages" src="./images/{{.}}">
+              <div id="NameAge">{{name}}, {{age}}
+                  <div id="degreeCoursePosition">
+                      {{degreeCourse}} {{semester}}. Semester</div>
+                  <div id="BioStyle">
+                      {{aboutMe}}</div>
+              </div>
+      {{/imageNames}}
+        <div id="LikeHateButtonsPosition">
+                <form  method="post" action="./rate?profileId={{id}}&isLike=true">
+                    <input id="Love" type="submit" value="Like">
+                    {{>snippet/csrfToken}}
+
+                <form  method="post" action="./rate?profileId={{id}}&isLike=false">
+                <input id="Hate" type="submit" value="Hate">
                 {{>snippet/csrfToken}}
-
-            <form  method="post" action="./rate?profileId={{id}}&isLike=false">
-            <input id="Hate" type="submit" value="Hate">
-            {{>snippet/csrfToken}}
-
-            <br/>
-        {{/profiles}}
-
-        {{^profiles}}
-            <p>Looks like you've already rated everyone!</p>
-        {{/profiles}}
+        </div>
     </div>
+                <br/>
+            {{/profiles}}
+
+            {{^profiles}}
+                <p>Looks like you've already rated everyone!</p>
+            {{/profiles}}
+{{>snippet/nav}}
 {{>layout/footer}}

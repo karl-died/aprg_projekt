@@ -2,29 +2,39 @@ body {
     background: linear-gradient(#B6E5FF, #A6DEF0, #A3DEFF, #75CFEB, #52C4E9);
     background-repeat: no-repeat;
     background-attachment: fixed;
-    text-align: center
 }
 
-h1 {
-    text-align: center
+#LoginPage{
+    text-align: center;
+    display: flex;
+    height: 600px;
+    justify-content: center;
+    align-items: center;
+
 }
 
-p {
+#ZunderIcon{
+    margin: 30px;
+    background-color: white;
+    border-radius: 50%;
+    height: 120px;
+    width: 120px;
 
 }
+
 #loginButton {
     background-color: #2B2828;
     border-radius: 12px;
     color: white;
     padding: 15px 50px;
     text-decoration: none;
-    display: inline-block;
+    display: ;
     font-family: jaldi;
     transition-duration: 0.4s;
     text-align: center;
     border: 2px solid #04AA6D;
     font-size: 12px;
-    width: 10%;
+    margin: 30px;
 }
 #loginButton:hover {
     background-color: #04AA6D; /* Green */
@@ -43,6 +53,7 @@ p {
     border: 2px solid #04AA6D;
     font-size: 12px;
     width: 10%;
+
 }
 #registerButton:hover {
     background-color: #04AA6D; /* Green */
@@ -68,37 +79,102 @@ p {
 }
 input{
     border-radius: 12px;
+    border: none;
     outline: none;
     padding: 10px;
     font-family: jaldi;
+    margin-bottom: 3px;
+    border-bottom: 1px solid black;
 
 }
-img{
-    border-radius: 12px;
-}
 
-a:link, a:visited {
+
+
+#NavigatorStyle{
+    display:flex;
+    align-items: flex-end;
+    justify-content: center;
+    flex-direction: row;
+}
+#NavigatorButton:link{
     background-color: #2B2828;
     border-radius: 12px;
     color: white;
-    padding: 15px 50px;
+    padding: 15px 35px;
     text-decoration: none;
-    display: inline-block;
     font-family: jaldi;
     transition-duration: 0.4s;
-    text-align: center;
     border: 2px solid #04AA6D;
     font-size: 12px;
-    width: 10%;
-
 }
 
-a:hover, a:active {
+#NavigatorButton:active{
+    background-color: #2B2828;
+    border-radius: 12px;
+    color: white;
+    padding: 15px 35px;
+    text-decoration: none;
+    font-family: jaldi;
+    transition-duration: 0.4s;
+    border: 2px solid #04AA6D;
+    font-size: 12px;
+}
+
+#NavigatorButton:hover{
     background-color: #04AA6D; /* Green */
     color: white;
 }
-li{
-    display: inline;
+
+
+
+#ImageContainer{
+    position: relative;
+    width: 450px;
+    background-color: ;
+    margin-inline: auto;
+    margin-top: 25px;
+
+}
+
+#RateImages{
+    border-radius: 14px;
+    height: auto;
+    max-width: 100%;
+
+
+}
+#NameAge{
+    font-size: 40px;
+    color: white;
+    font-family: jaldi;
+    font-weight: bold;
+    text-shadow: 1px 1px black;
+    position: absolute;
+    left: 30px;
+    bottom: 100px;
+
+}
+
+#degreeCoursePosition{
+    font-size: 20px;
+    font-weight: bold;
+    position: relative;
+    left:px;
+    text-shadow: 1px 1px black;
+}
+#BioStyle{
+    text-shadow: 1px 1px black;
+    font-weight: normal;
+    font-size: 15px;
+    position: relative;
+}
+
+#LikeHateButtonsPosition{
+    display:flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-around;
+
 }
 
 #Love{
@@ -109,6 +185,7 @@ li{
     background-color: #f44336;
     transition-duration: 0.4s;
     border: 1px solid black;
+    margin-right: 200px;
 }
 #Love:hover{
     background-color: hotpink;
@@ -128,4 +205,25 @@ li{
     background-color: white;
     color: black;
 
+}
+
+#MatchesStyle{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: ;
+    justify-content: center;
+}
+#ChatsStyle{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: ;
+    justify-content: center;
+}
+#ProfileEditStyle{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }

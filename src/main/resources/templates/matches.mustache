@@ -1,24 +1,25 @@
 {{>layout/header}}
-{{>snippet/nav}}
 
-<h2>Matches</h2>
 
+<div id="MatchesStyle">
 {{#matches}}
     <img src="../images/{{profilePictureName}}" width="50">
-    <h3><a href="../chat/with?profileId={{id}}">{{name}}, {{age}}</a></h3>
-    <p></p>
+    <br>
+    <div><a href="../chat/with?profileId={{id}}">{{name}}, {{age}}</a></div>
 {{/matches}}
-</br>
-{{#chats}}
-    <img src="../images/{{profilePictureName}}" width="50">
-    <h3><a href="../chat/with?profileId={{id}}">{{name}}, {{age}}</a></h3>
-    <p>{{lastChatMessage.message}}</p>
-{{/chats}}
-
+</div>
+<br>
+<div id="ChatsStyle">
+    {{#chats}}
+        <img src="../images/{{profilePictureName}}" width="50">
+        <h3><a href="../chat/with?profileId={{id}}">{{name}}, {{age}}</a></h3>
+        <p>{{lastChatMessage.message}}</p>
+    {{/chats}}
+</div>
 {{^matches}}
     {{^chats}}
         <p>Looks you don't have any matches yet!</p>
     {{/chats}}
 {{/matches}}
-
+{{>snippet/nav}}
 {{>layout/footer}}
