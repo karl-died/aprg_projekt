@@ -1,9 +1,6 @@
 package com.example.aprg_projekt.controllers;
 
-import com.example.aprg_projekt.models.Account;
-import com.example.aprg_projekt.models.ChatMessage;
-import com.example.aprg_projekt.models.Profile;
-import com.example.aprg_projekt.models.ProfileDTO;
+import com.example.aprg_projekt.models.*;
 import com.example.aprg_projekt.services.ProfileService;
 import com.example.aprg_projekt.utils.Redirect;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +58,20 @@ public class ProfileController {
         model.addAttribute("semester", profile.getSemester());
         model.addAttribute("imageNames", profile.getImageNames());
         model.addAttribute("profilePicture", profile.getProfilePicture());
+
+        List<GenderOption> genderOptions = Arrays.asList(new GenderOption[] {
+            new GenderOption("MALE", ""),
+            new GenderOption("FEMALE", "selected"),
+            new GenderOption("DIVERSE", "")
+        });
+        List<GenderOption> interestedInOptions = Arrays.asList(new GenderOption[] {
+                new GenderOption("MALE", "selected"),
+                new GenderOption("FEMALE", "selected"),
+                new GenderOption("DIVERSE", "")
+        });
+
+        model.addAttribute("genderOptions", genderOptions);
+        model.addAttribute("interestedInOptions", interestedInOptions);
 
         return "editProfile";
     }
