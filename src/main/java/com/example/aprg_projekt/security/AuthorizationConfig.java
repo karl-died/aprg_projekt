@@ -49,7 +49,9 @@ class AuthorizationConfig {
                 .requestMatchers("/profiles/**").authenticated()
                 .requestMatchers("/rate").authenticated()
                 .requestMatchers("/chat/**").authenticated()
-                .requestMatchers("/profile/edit").authenticated()
+                .requestMatchers("/edit").authenticated()
+                .requestMatchers("/save").authenticated()
+                .requestMatchers("/matches").authenticated()
                 .anyRequest().authenticated() // Secure any other page (aka blacklist)
         );
 
