@@ -26,11 +26,9 @@ class AuthorizationConfig {
         var loginEndpoint = "/login";
         http.formLogin(form -> form // Customized login page.
                 .loginPage(loginEndpoint)
-                // This failure handler inserts an error-flag parameter into the
-                // login-url when a user login attempt has failed. This is needed to show an
-                // error message in the custom login form.
                 .failureHandler(new SimpleUrlAuthenticationFailureHandler(loginEndpoint + "?error=true"))
-                .permitAll());
+                .permitAll()
+        );
 
         http.logout(logout -> logout
                 .logoutUrl("/logout")
@@ -42,7 +40,7 @@ class AuthorizationConfig {
                 .requestMatchers("/admin").hasAuthority(Role.ADMIN) // This endpoint is only available for users with the ROLE_ADMIN.
                 .requestMatchers("/styles.css").permitAll()
                 .requestMatchers("/static/**").anonymous()
-                .requestMatchers("/images/**").permitAll()
+                .requestMatchers("/images/**").authenticated()
                 .requestMatchers("/register").anonymous()
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/login").anonymous()
@@ -51,7 +49,9 @@ class AuthorizationConfig {
                 .requestMatchers("/profiles/**").authenticated()
                 .requestMatchers("/rate").authenticated()
                 .requestMatchers("/chat/**").authenticated()
-                .requestMatchers("/profile/edit").authenticated()
+                .requestMatchers("/edit").authenticated()
+                .requestMatchers("/save").authenticated()
+                .requestMatchers("/matches").authenticated()
                 .anyRequest().authenticated() // Secure any other page (aka blacklist)
         );
 

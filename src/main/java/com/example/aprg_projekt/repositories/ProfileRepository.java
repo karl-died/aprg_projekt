@@ -41,7 +41,7 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
              firstName, 
              lastName, 
              dateOfBirth,
-             gender,
+             genderId,
              degreeCourse,
              semester,
              aboutMe,
@@ -51,7 +51,7 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
              :firstName,
              :lastName, 
              :dateOfBirth,
-             :gender,
+             (SELECT gender.id FROM gender WHERE gender.name = :gender),
              :degreeCourse,
              :semester,
              :aboutMe,
@@ -75,7 +75,7 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
         SET  firstName = :firstName, 
              lastName = :lastName, 
              dateOfBirth = :dateOfBirth,
-             gender = :gender,
+             genderId = (SELECT gender.id FROM gender WHERE gender.name = :gender),
              degreeCourse = :degreeCourse,
              semester = :semester,
              aboutMe = :aboutMe,
@@ -132,7 +132,7 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
 
     @Query("""
         SELECT *
-        FROM profile
+        FROM profile_image
         WHERE EXISTS (
             SELECT * 
             FROM r_rating 
@@ -144,17 +144,17 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
 
     @Query("""
         SELECT *
-        FROM profile
+        FROM profile_image
         WHERE EXISTS (
             SELECT * 
             FROM r_rating 
             WHERE r_rating.accountId = :accountId 
-            AND r_rating.ratedId = profile.accountId
+            AND r_rating.ratedId = profile_image.accountId
             AND r_rating.isLike
         ) AND EXISTS (
             SELECT * 
             FROM r_rating 
-            WHERE r_rating.accountId = profile.accountId
+            WHERE r_rating.accountId = profile_image.accountId
             AND r_rating.ratedId = :accountId
             AND r_rating.isLike
         );
@@ -171,5 +171,43 @@ public interface ProfileRepository extends CrudRepository<Profile, UUID> {
         );
     """)
     void rate(String email, UUID ratedProfileId, boolean isLike);
+
+    @Query("""
+        SELECT name
+        FROM gender
+    """)
+    List<String> getGenderOptions();
+
+    @Modifying
+    @Query("""
+        INSERT INTO r_interested_in VALUES (
+            :accountId, 
+            (SELECT id FROM gender WHERE name = :gender)
+        )
+        ON CONFLICT DO NOTHING
+    """)
+    void addGenderInterest(UUID accountId, String gender);
+
+    @Modifying
+    @Query("""
+        DELETE FROM r_interested_in 
+        WHERE EXISTS (
+            SELECT *
+            FROM gender
+            WHERE r_interested_in.accountId = :accountId 
+            AND r_interested_in.genderId = gender.id 
+            AND gender.name = :gender
+    )
+    """)
+    void removeGenderInterest(UUID accountId, String gender);
+
+
+    @Modifying
+    @Query("""
+        UPDATE profile
+        SET profilePictureName = :profilePictureName
+        WHERE profile.accountId = (SELECT account_profile.accountId FROM account_profile WHERE account_profile.email = :email)
+    """)
+    void updateProfilePicture(String email, String profilePictureName);
 }
 

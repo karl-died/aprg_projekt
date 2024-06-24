@@ -6,17 +6,34 @@ CREATE TABLE account (
     password varchar(100) NOT NULL
 );
 
+CREATE TABLE gender (
+    id INTEGER PRIMARY KEY,
+    name VARCHAR(30) NOT NULL
+);
+
+INSERT INTO gender VALUES
+    (1, 'MALE'),
+    (2, 'FEMALE'),
+    (3, 'DIVERSE')
+;
+
 CREATE TABLE profile (
     id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     firstName varchar(50) NOT NULL,
     lastName varchar(50) NOT NULL,
     dateOfBirth timestamp,
-    gender varchar(20),
+    genderId INTEGER REFERENCES gender(id),
     degreeCourse varchar(50) NOT NULL,
     aboutMe text NOT NULL,
     semester integer NOT NULL,
     accountId uuid REFERENCES account(id) NOT NULL UNIQUE,
     profilePictureName varchar(100)
+);
+
+CREATE TABLE r_interested_in (
+    accountId uuid REFERENCES account(id) NOT NULL,
+    genderId INTEGER REFERENCES gender(id) NOT NULL,
+    PRIMARY KEY(accountId, genderId)
 );
 
 CREATE TABLE authority (
@@ -39,15 +56,21 @@ CREATE TABLE image (
 );
 
 CREATE VIEW account_profile AS
-    SELECT account.id AS accountId, profile.id AS profileId, email, firstName, lastName, dateOfBirth, gender, degreeCourse, aboutMe, semester
+    SELECT account.id AS accountId, profile.id AS profileId, email, firstName, lastName, dateOfBirth, genderId, degreeCourse, aboutMe, semester
     FROM account LEFT JOIN profile ON account.id = profile.accountId;
 
 CREATE VIEW profile_image AS
-    SELECT id,
+    SELECT profile.id AS id,
            firstName,
            lastName,
            dateOfBirth,
-           gender,
+           gender.name AS "GENDER",
+           array(
+                SELECT gender.name
+                FROM r_interested_in
+                JOIN gender ON r_interested_in.genderId = gender.id
+                WHERE r_interested_in.accountId = profile.accountId
+           ) AS interestedIn,
            degreeCourse,
            aboutMe,
            semester,
@@ -58,8 +81,9 @@ CREATE VIEW profile_image AS
                 FROM image
                 WHERE image.profileId = profile.id
                 ORDER BY index
-           ) as imageNames
-    FROM profile;
+           ) AS imageNames
+    FROM profile
+    JOIN gender ON profile.genderId = gender.id;
 
 CREATE TABLE chat (
     id uuid DEFAULT gen_random_uuid() PRIMARY KEY,

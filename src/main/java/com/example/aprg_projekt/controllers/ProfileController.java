@@ -1,6 +1,7 @@
 package com.example.aprg_projekt.controllers;
 
 import com.example.aprg_projekt.models.Account;
+import com.example.aprg_projekt.models.GenderOption;
 import com.example.aprg_projekt.models.Profile;
 import com.example.aprg_projekt.models.ProfileDTO;
 import com.example.aprg_projekt.services.ProfileService;
@@ -14,13 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
-@RequestMapping("/profile")
+@RequestMapping
 public class ProfileController {
 
     private final ProfileService profileService;
@@ -33,14 +31,29 @@ public class ProfileController {
     @PostMapping("/save")
     public String saveProfile(@ModelAttribute Profile profile,
                               @RequestParam(name = "image") MultipartFile image,
+                              @RequestParam(name = "pfp") MultipartFile profilePicture,
+                              @RequestParam(name = "Interested In") List<String> interestedIn,
                               Authentication authentication) {
         profileService.save(authentication.getName(), profile);
-        try {
-            profileService.addImage(authentication.getName(), image);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("error");
+
+        if(!image.isEmpty()) {
+            try {
+                profileService.addImage(authentication.getName(), image);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
+        System.out.println(profilePicture.getOriginalFilename() + ", " + profilePicture.getSize());
+        if(!profilePicture.isEmpty()) {
+            try {
+                profileService.updateProfilePicture(authentication.getName(), profilePicture);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        profileService.addGenderInterest(authentication.getName(), interestedIn);
         return Redirect.to("/");
     }
 
@@ -48,7 +61,26 @@ public class ProfileController {
     public String editProfile(Model model, Authentication authentication) {
         Optional<Profile> profileOptional = profileService.getByEmail(authentication.getName());
 
+        List<String> genders = profileService.getGenderOptions();
+
+        List<GenderOption> genderOptions = new ArrayList<>();
+        List<GenderOption> interestedInOptions = new ArrayList<>();
+
+
+
         if(profileOptional.isPresent()) {
+            for (String gender : genders) {
+                if(profileOptional.get().getGender().equals(gender)) {
+                    genderOptions.add(new GenderOption(gender, "selected"));
+                } else {
+                    genderOptions.add(new GenderOption(gender, ""));
+                }
+                if(profileOptional.get().getInterestedIn().contains(gender)) {
+                    interestedInOptions.add(new GenderOption(gender, "selected"));
+                } else {
+                    interestedInOptions.add(new GenderOption(gender, ""));
+                }
+            }
             Profile profile = profileOptional.get();
             model.addAttribute("exists", true);
             model.addAttribute("firstName", profile.getFirstName());
@@ -59,7 +91,13 @@ public class ProfileController {
             model.addAttribute("aboutMe", profile.getAboutMe());
             model.addAttribute("semester", profile.getSemester());
             model.addAttribute("imageNames", profile.getImageNames());
+            model.addAttribute("profilePicture", profile.getProfilePicture());
         } else {
+            for (String gender : genders) {
+                genderOptions.add(new GenderOption(gender, ""));
+                interestedInOptions.add(new GenderOption(gender, ""));
+            }
+
             model.addAttribute("exists", false);
             model.addAttribute("firstName", "");
             model.addAttribute("lastName", "");
@@ -70,20 +108,11 @@ public class ProfileController {
             model.addAttribute("semester", "");
         }
 
+        model.addAttribute("genderOptions", genderOptions);
+        model.addAttribute("interestedInOptions", interestedInOptions);
+
 
         return "editProfile";
-    }
-
-    @GetMapping("/")
-    public String showProfile(Model model, @RequestParam(name = "profileId") UUID profileId, Authentication authentication) {
-        if(!profileService.isAllowedToViewProfile(authentication.getName(), profileId)) {
-            return Redirect.to("/");
-        }
-        Optional<Profile> profileOptional = profileService.getById(profileId);
-        if(profileOptional.isPresent()) {
-            model.addAttribute("profile", new ProfileDTO(profileOptional.get()));
-        }
-        return "viewProfile";
     }
 
     @GetMapping("/likes")
@@ -103,11 +132,20 @@ public class ProfileController {
     public String showMatches(Model model, Authentication authentication) {
         if (authentication.getPrincipal() instanceof Account account) {
             List<Profile> likedProfiles = profileService.getMatches(account.getEmail());
-            List<ProfileDTO> displayProfiles = new ArrayList<>();
+            List<ProfileDTO> matches = new ArrayList<>();
+            List<ProfileDTO> chats = new ArrayList<>();
             for (Profile profile : likedProfiles) {
-                displayProfiles.add(new ProfileDTO(profile));
+                if(profile.getLastChatMessage() == null) {
+                    matches.add(new ProfileDTO(profile));
+                } else {
+                    chats.add(new ProfileDTO(profile));
+                }
             }
-            model.addAttribute("profiles", displayProfiles);
+            chats.sort((o1, o2)
+                    -> o1.getLastChatMessage().getDateSent().compareTo(o2.getLastChatMessage().getDateSent()));
+            chats = chats.reversed();
+            model.addAttribute("matches", matches);
+            model.addAttribute("chats", chats);
         }
         return "matches";
     }

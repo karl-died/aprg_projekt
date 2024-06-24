@@ -2,19 +2,25 @@ package com.example.aprg_projekt.services;
 
 
 import com.example.aprg_projekt.models.Account;
+import com.example.aprg_projekt.models.ChatMessage;
 import com.example.aprg_projekt.models.Profile;
 import com.example.aprg_projekt.repositories.AccountRepository;
+import com.example.aprg_projekt.repositories.ChatRepository;
 import com.example.aprg_projekt.repositories.ImageRepository;
 import com.example.aprg_projekt.repositories.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Service
@@ -27,7 +33,10 @@ public class ProfileService {
     @Autowired
     private ImageRepository imageRepository;
 
-    String uploadDirectory = "uploads/";
+    private static final Path UPLOAD_DIRECTORY = Paths.get("uploads/");
+
+    @Autowired
+    private ChatRepository chatRepository;
 
     public Optional<Profile> getById(UUID id) {
         Optional<Profile> profile = profileRepository.findById(id);
@@ -67,6 +76,8 @@ public class ProfileService {
             );
         }
     }
+
+
 
     public List<Profile> getNonRatedProfiles(String email) {
         Optional<Account> account = accountRepository.findByEmail(email);
@@ -121,6 +132,12 @@ public class ProfileService {
 
         UUID id = account.get().getId();
         List<Profile> profiles = profileRepository.getMatches(id);
+        for(Profile profile : profiles) {
+            List<ChatMessage> messages = chatRepository.getChatMessages(email, profile.getId());
+            if(!messages.isEmpty()) {
+                profile.setLastChatMessage(messages.getLast());
+            }
+        }
         return profiles;
     }
 
@@ -149,17 +166,83 @@ public class ProfileService {
     }
 
     public void addImage(String email, MultipartFile image) throws IOException {
-        String uniqueFileName = UUID.randomUUID().toString() + image.getOriginalFilename();
-        Path uploadPath = Path.of(this.uploadDirectory);
-        Path filePath = uploadPath.resolve(uniqueFileName);
+        Optional<Profile> profile = profileRepository.findByEmail(email);
+        if(profile.isPresent()) {
+            String uniqueFileName = UUID.randomUUID().toString() + image.getOriginalFilename();
+            Path filePath = UPLOAD_DIRECTORY.resolve(uniqueFileName);
 
-        if(!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
+            if (!Files.exists(UPLOAD_DIRECTORY)) {
+                Files.createDirectories(UPLOAD_DIRECTORY);
+            }
+
+            Files.copy(image.getInputStream(), filePath);
+            for(String imageName: profile.get().getImageNames()) {
+                Files.delete(UPLOAD_DIRECTORY.resolve(imageName));
+                System.out.println(imageName);
+            }
+
+            imageRepository.removeImages(email);
+            profileRepository.addImage(email, uniqueFileName);
+        }
+    }
+
+    public void updateProfilePicture(String email, MultipartFile image) throws IOException {
+        Optional<Profile> profile = profileRepository.findByEmail(email);
+        System.out.println(image.getOriginalFilename());
+        if(profile.isPresent()) {
+            String uniqueFileName = UUID.randomUUID().toString() + image.getOriginalFilename();
+            Path filePath = UPLOAD_DIRECTORY.resolve(uniqueFileName);
+            System.out.println(uniqueFileName);
+
+
+            if(!Files.exists(UPLOAD_DIRECTORY)) {
+                Files.createDirectories(UPLOAD_DIRECTORY);
+            }
+
+            Files.copy(image.getInputStream(), filePath);
+            try {
+                String profilePictureName = profile.get().getProfilePicture();
+                if(profilePictureName != null) {
+                    Files.delete(UPLOAD_DIRECTORY.resolve(profilePictureName));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            profileRepository.updateProfilePicture(email, uniqueFileName);
         }
 
-        Files.copy(image.getInputStream(), filePath);
-        profileRepository.addImage(email, uniqueFileName);
+    }
 
-        System.out.println(filePath);
+    public Resource loadImage(String filename) {
+        try {
+            Path file = UPLOAD_DIRECTORY.resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() && resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("Could not read file: " + filename);
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<String> getGenderOptions() {
+        return profileRepository.getGenderOptions();
+    }
+
+    public void addGenderInterest(String email, List<String> selectedGenders) {
+        List<String> genders = profileRepository.getGenderOptions();
+        Optional<Account> account = accountRepository.findByEmail(email);
+
+        if(account.isPresent()) {
+            for (String gender : genders) {
+                if (selectedGenders.contains(gender)) {
+                    profileRepository.addGenderInterest(account.get().getId(), gender);
+                } else {
+                    profileRepository.removeGenderInterest(account.get().getId(), gender);
+                }
+            }
+        }
     }
 }

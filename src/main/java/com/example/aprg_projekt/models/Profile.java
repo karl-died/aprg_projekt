@@ -2,11 +2,15 @@ package com.example.aprg_projekt.models;
 
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Table("PROFILE_IMAGE")
@@ -22,6 +26,8 @@ public class Profile {
     private LocalDate dateOfBirth;
     @Column("GENDER")
     private String gender;
+    @Column("INTERESTEDIN")
+    private List<String> interestedIn = new ArrayList<>();
     @Column("DEGREECOURSE")
     private String degreeCourse;
     @Column("SEMESTER")
@@ -32,6 +38,9 @@ public class Profile {
     private String profilePicture;
     @Column("IMAGENAMES")
     private String[] imageNames;
+    @Transient
+    private ChatMessage lastChatMessage;
+
 
     public Profile() {
 
@@ -113,6 +122,8 @@ public class Profile {
         return gender;
     }
 
+    public List<String> getInterestedIn() { return interestedIn; }
+
     public String getDegreeCourse() {
         return degreeCourse;
     }
@@ -128,6 +139,8 @@ public class Profile {
     public String getProfilePicture() { return profilePicture; }
 
     public String[] getImageNames() { return imageNames; }
+
+    public ChatMessage getLastChatMessage() { return lastChatMessage; }
 
     public void setId(UUID id) {
         this.id = id;
@@ -149,6 +162,8 @@ public class Profile {
         this.gender = gender;
     }
 
+    public void setInterestedIn(List<String> interestedIn) { this.interestedIn = interestedIn; }
+
     public void setDegreeCourse(String degreeCourse) {
         this.degreeCourse = degreeCourse;
     }
@@ -164,6 +179,8 @@ public class Profile {
     public void setProfilePicture(String profilePicture) { this.profilePicture = profilePicture; }
 
     public void setImageNames(String[] imageNames) { this.imageNames = imageNames; }
+
+    public void setLastChatMessage(ChatMessage lastMessage) { this.lastChatMessage = lastMessage; }
 
     @Override
     public String toString() {
