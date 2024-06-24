@@ -9,8 +9,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class ResourceConfiguration implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/assets/**")
+                .addResourceLocations("classpath:static/assets/")
+                .setCachePeriod(0);
         registry.addResourceHandler("/images/**")
-                .addResourceLocations("/uploads", "classpath:static/assets/")
+                .addResourceLocations("classpath:static/assets/")
                 .setCachePeriod(0);
     }
 }

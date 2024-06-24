@@ -13,7 +13,7 @@
         <img src="../images/{{.}}" width="50">
     {{/profilePicture}}
     <p>
-        <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
+        <input type="file" id="pfp" name="pfp" accept="image/*">
     </p>
     <p>
         <input type="text" id="firstName" name="firstName" placeholder="First Name" value="{{firstName}}" required autofocus>
@@ -25,7 +25,20 @@
         <input type="date" id="dateOfBirth" name="dateOfBirth" placeholder="Date of Birth" value="{{dateOfBirth}}" required autofocus>
     </p>
     <p>
-        <input type="text" id="gender" name="gender" placeholder="Gender" value="{{gender}}" required autofocus>
+        <label for="gender">Gender</label>
+        <select type="text" id="gender" name="Gender" required autofocus>
+            {{#genderOptions}}
+                <option value="{{name}}" {{options}}>{{name}}</option>
+            {{/genderOptions}}
+        </select>
+    </p>
+    <p>
+        <label for="interestedIn">Interested In</label>
+        <select type="text" id="interestedIn" name="Interested In" required autofocus multiple>
+            {{#interestedInOptions}}
+                <option name="{{name}}" value="{{name}}" {{options}}>{{name}}</option>
+            {{/interestedInOptions}}
+        </select>
     </p>
     <p>
         <input type="text" id="degreeCourse" name="degreeCourse" placeholder="Degree Course" value="{{degreeCourse}}" required autofocus>

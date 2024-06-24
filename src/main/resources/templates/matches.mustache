@@ -6,7 +6,7 @@
    <div id="MatchesWindow">
        <img src="../images/{{profilePictureName}}" width="50">
        <br>
-        <a href="../chat/with?profileId={{id}}">{{name}}, {{age}}</a>
+        <a href="../chat?profileId={{id}}">{{name}}, {{age}}</a>
     </div>
 
 {{/matches}}
@@ -17,7 +17,7 @@
 
         <div id="ChatsWindow">
            <div><img src="../images/{{profilePictureName}}" width="50"></div>
-            <div id="ChatsWindow2"><a href="../chat/with?profileId={{id}}">{{name}}, {{age}}</a>
+            <div id="ChatsWindow2"><a href="../chat?profileId={{id}}">{{name}}, {{age}}</a>
 
             {{lastChatMessage.message}}
             </div>

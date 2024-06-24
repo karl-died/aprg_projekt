@@ -29,7 +29,7 @@ public class ChatController {
         this.profileService = profileService;
     }
 
-    @GetMapping("/chat/with")
+    @GetMapping("/chat")
     public String chatPage(Model model, @RequestParam(name = "profileId") UUID profileId, Authentication auth) {
 
         List<ChatMessage> chatMessages = Arrays.asList(
