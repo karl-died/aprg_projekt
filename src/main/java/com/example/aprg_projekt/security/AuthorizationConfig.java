@@ -52,6 +52,7 @@ class AuthorizationConfig {
                 .requestMatchers("/edit").authenticated()
                 .requestMatchers("/save").authenticated()
                 .requestMatchers("/matches").authenticated()
+                .requestMatchers("/assets/**").permitAll()
                 .anyRequest().authenticated() // Secure any other page (aka blacklist)
         );
 

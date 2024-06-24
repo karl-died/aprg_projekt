@@ -1,17 +1,24 @@
 {{>layout/header}}
 
-<form method="post" action="./login">
-    <h2>Login</h2>
-    <p>
-        <label for="username"></label>
-        <input type="text" id="username" name="username" placeholder="Email" required autofocus>
-    </p>
-    <p>
-        <label for="password"></label>
-        <input type="password" id="password" name="password" placeholder="Password" required>
-    </p>
-    {{>snippet/csrfToken}}
-    <button type="submit" value="Login">Login</button>
-</form>
+<div id="LoginPage">
+    <form method="post" action="./login">
 
+        <div id="ZunderIcon">
+            <img src="./assets/zunder.svg">
+        </div>
+        <div id="Username">
+            <input type="text" id="username" name="username" placeholder="Email" required autofocus>
+        </div>
+        <div id="Password">
+            <input type="password" id="password" name="password" placeholder="Password" required>
+        </div>
+        {{>snippet/csrfToken}}
+        <div>
+        <button id="loginButton" type="submit" value="Login">Login</button>
+        </div>
+        <div>
+           <a id="registerButton" href="./register">Register</a>
+        </div>
+
+</div>
 {{>layout/footer}}

@@ -56,34 +56,34 @@ CREATE TABLE image (
 );
 
 CREATE VIEW account_profile AS
-    SELECT account.id AS accountId, profile.id AS profileId, email, firstName, lastName, dateOfBirth, genderId, degreeCourse, aboutMe, semester
-    FROM account LEFT JOIN profile ON account.id = profile.accountId;
+SELECT account.id AS accountId, profile.id AS profileId, email, firstName, lastName, dateOfBirth, genderId, degreeCourse, aboutMe, semester
+FROM account LEFT JOIN profile ON account.id = profile.accountId;
 
 CREATE VIEW profile_image AS
-    SELECT profile.id AS id,
-           firstName,
-           lastName,
-           dateOfBirth,
-           gender.name AS "GENDER",
-           array(
-                SELECT gender.name
-                FROM r_interested_in
-                JOIN gender ON r_interested_in.genderId = gender.id
-                WHERE r_interested_in.accountId = profile.accountId
-           ) AS interestedIn,
-           degreeCourse,
-           aboutMe,
-           semester,
-           profilePictureName,
-           accountId,
-           array(
-                SELECT name
-                FROM image
-                WHERE image.profileId = profile.id
-                ORDER BY index
-           ) AS imageNames
-    FROM profile
-    JOIN gender ON profile.genderId = gender.id;
+SELECT profile.id AS id,
+       firstName,
+       lastName,
+       dateOfBirth,
+       gender.name AS "GENDER",
+       array(
+               SELECT gender.name
+               FROM r_interested_in
+                        JOIN gender ON r_interested_in.genderId = gender.id
+               WHERE r_interested_in.accountId = profile.accountId
+       ) AS interestedIn,
+       degreeCourse,
+       aboutMe,
+       semester,
+       profilePictureName,
+       accountId,
+       array(
+               SELECT name
+               FROM image
+               WHERE image.profileId = profile.id
+               ORDER BY index
+       ) AS imageNames
+FROM profile
+         JOIN gender ON profile.genderId = gender.id;
 
 CREATE TABLE chat (
     id uuid DEFAULT gen_random_uuid() PRIMARY KEY,

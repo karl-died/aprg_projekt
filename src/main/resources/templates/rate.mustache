@@ -1,30 +1,37 @@
 {{>layout/header}}
-{{>snippet/nav}}
 
-<h1>Rate Profiles</h1>
 
 {{#profiles}}
-    {{#imageNames}}
-        <img src="./images/{{.}}" width="300">
-    {{/imageNames}}
-    <h3>{{name}}, {{age}}</h3>
-    <p>{{degreeCourse}}</p>
-    <p>{{semester}}. Semester</p>
-    <h4>About Me:</h4>
-    <p>{{aboutMe}}</p>
-    <form  method="post" action="./rate?profileId={{id}}&isLike=true">
-        <input type="submit" value="Like">
-        {{>snippet/csrfToken}}
-    </form>
-    <form  method="post" action="./rate?profileId={{id}}&isLike=false">
-    <input type="submit" value="Don't Like">
-    {{>snippet/csrfToken}}
-    </form>
-    <br/>
-{{/profiles}}
+    <div id="ImageContainer">
+      {{#imageNames}}
+              <img id="RateImages" src="./images/{{.}}">
+              <div id="NameAge">{{name}}, {{age}}
+                  <div id="degreeCoursePosition">
+                      {{degreeCourse}} {{semester}}. Semester</div>
+                  <div id="BioStyle">
+                      {{aboutMe}}</div>
+              </div>
+      {{/imageNames}}
+    </div>
+    <div id="LikeHateButtonsPosition">
+                <form  method="post" action="./rate?profileId={{id}}&isLike=true">
+                    <button id="Love" type="submit" value="Like">
+                        <img src="./assets/LikeButton.svg">
+                    </button>
+                    {{>snippet/csrfToken}}
 
-{{^profiles}}
-    <p>Looks like you've already rated everyone!</p>
-{{/profiles}}
+                <form  method="post" action="./rate?profileId={{id}}&isLike=false">
+                <button id="Hate" type="submit">
+                    <img src="./assets/HateButton.svg">
+                </button>
+                {{>snippet/csrfToken}}
+    </div>
 
+                <br/>
+            {{/profiles}}
+
+            {{^profiles}}
+                <p>Looks like you've already rated everyone!</p>
+            {{/profiles}}
+{{>snippet/nav}}
 {{>layout/footer}}

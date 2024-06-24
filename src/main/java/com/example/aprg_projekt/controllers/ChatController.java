@@ -30,7 +30,7 @@ public class ChatController {
         this.profileService = profileService;
     }
 
-    @GetMapping("/chat/with")
+    @GetMapping("/chat")
     public String chatPage(Model model, @RequestParam(name = "profileId") UUID profileId, Authentication  auth) {
         if (auth.getPrincipal() instanceof Account account) {
             List<ChatMessage> chatMessages = chatService.getChatMessages(account.getEmail(), profileId);

@@ -1,28 +1,33 @@
 {{>layout/header}}
-{{>snippet/nav}}
 
-<h1>Matches</h1>
 
+<div id="MatchesStyle">
 {{#matches}}
-    {{#profilePictureName}}
-        <img src="../images/{{.}}" width="50">
-    {{/profilePictureName}}
-    <h3><a href="../chat/with?profileId={{id}}">{{name}}</a></h3>
-    <p></p>
-{{/matches}}
-</br>
-{{#chats}}
-    {{#profilePictureName}}
-        <img src="../images/{{.}}" width="50">
-    {{/profilePictureName}}
-    <h3><a href="../chat/with?profileId={{id}}">{{name}}</a></h3>
-    <p>{{lastChatMessage.message}}</p>
-{{/chats}}
+   <div id="MatchesWindow">
+       <img src="../images/{{profilePictureName}}" width="50">
+       <br>
+        <a href="../chat?profileId={{id}}">{{name}}, {{age}}</a>
+    </div>
 
+{{/matches}}
+</div>
+<br>
+<div id="ChatsStyle">
+    {{#chats}}
+
+        <div id="ChatsWindow">
+           <div><img src="../images/{{profilePictureName}}" width="50"></div>
+            <div id="ChatsWindow2"><a href="../chat?profileId={{id}}">{{name}}, {{age}}</a>
+
+            {{lastChatMessage.message}}
+            </div>
+        </div>
+    {{/chats}}
+</div>
 {{^matches}}
     {{^chats}}
         <p>Looks you don't have any matches yet!</p>
     {{/chats}}
 {{/matches}}
-
+{{>snippet/nav}}
 {{>layout/footer}}

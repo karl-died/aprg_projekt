@@ -1,17 +1,21 @@
 {{>layout/header}}
 
 <form method="post" action="./register">
-    <h2 class="form-signin-heading">Registration</h2>
-    <p>
-        <label for="username">Email</label>
+    <div id="ZunderIcon">
+        <img src="./assets/zunder.svg">
+    </div>
+    <div>
         <input type="text" id="email" name="email" class="form-control" placeholder="Email" required autofocus>
-    </p>
-    <p>
-        <label for="password">Password</label>
+    </div>
+    <div>
         <input type="password" id="password" name="password" placeholder="Password" required>
-    </p>
+    </div>
     {{>snippet/csrfToken}}
-    <button type="submit">Register</button>
+        <div>
+    <button id="registerButton" type="submit">Register</button>
+        </div>
 </form>
+
+<div><a href="./login">Login</a></div>
 
 {{>layout/footer}}

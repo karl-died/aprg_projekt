@@ -1,38 +1,244 @@
 body {
-    background-color: lightblue;
-    text-align: center
+    background: linear-gradient(#B6E5FF, #A6DEF0, #A3DEFF, #75CFEB, #52C4E9);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+
 }
 
-h2 {
-    color: Black;
-    font-family: jaldi;
+
+
+#ZunderIcon{
+    margin: 30px;
+    background-color: white;
+    border-radius: 50%;
+    height: 120px;
+    width: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 150px;
+    margin-inline: auto;
+
 }
 
-p {
-    font-family: jaldi;
-    font-size: 20px;
-    color: Black;
-}
-button {
-    background-color: #2B2828;
+
+#loginButton {
+    background-color: #369AC6;
     border-radius: 12px;
     color: white;
-    padding: 14px 40px;
+    padding: 15px 50px;
     text-decoration: none;
-    display: inline-block;
-    font-size: 12px;
     font-family: jaldi;
     transition-duration: 0.4s;
+    font-size: 12px;
+    margin: 30px;
 }
-button:hover {
+#loginButton:hover {
     background-color: #04AA6D; /* Green */
     color: white;
 }
-
+#registerButton{
+    background-color: #369AC6;
+    border-radius: 12px;
+    color: white;
+    padding: 15px 50px;
+    text-decoration: none;
+    font-family: jaldi;
+    transition-duration: 0.4s;
+    font-size: 12px;
+    margin: 30px;
+}
+#logoutButton {
+    background-color: #369AC6;
+    border-radius: 12px;
+    color: white;
+    padding: 15px 50px;
+    text-decoration: none;
+    font-family: jaldi;
+    transition-duration: 0.4s;
+    text-align: center;
+    border: 1px white;
+    font-size: 12px;
+}
+#logoutButton:hover {
+    background-color: #04AA6D; /* Green */
+    color: white;
+}
 input{
     border-radius: 12px;
+    border: none;
     outline: none;
     padding: 10px;
     font-family: jaldi;
+    margin-bottom: 3px;
+    border-bottom: 1px solid black;
 
+}
+
+
+
+#NavigatorStyle{
+    overflow:hidden;
+    flex-wrap: nowrap;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #369AC6;
+}
+#NavigatorButton{
+    padding: 30px 40px;
+    margin: 0px auto;
+    text-align: center;
+    display: inline-block;
+}
+#NavigatorButton > img{
+    width: 50px;
+}
+
+
+
+
+
+
+#ImageContainer{
+    position: relative;
+    width: 450px;
+    margin-inline: auto;
+    margin-top: 25px;
+    text-align: left;
+
+}
+
+#RateImages{
+    border-radius: 14px;
+    height: auto;
+    max-width: 100%;
+
+
+}
+#NameAge{
+    font-size: 40px;
+    color: white;
+    font-family: jaldi;
+    font-weight: bold;
+    text-shadow: 1px 1px black;
+    position: absolute;
+    left: 30px;
+    bottom: 50px;
+
+}
+
+#degreeCoursePosition{
+    font-size: 20px;
+    font-weight: bold;
+    position: relative;
+    left:px;
+    text-shadow: 1px 1px black;
+}
+#BioStyle{
+    text-shadow: 1px 1px black;
+    font-weight: normal;
+    font-size: 15px;
+    position: relative;
+}
+
+#LikeHateButtonsPosition{
+    display:flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 15px;
+
+}
+
+#Love{
+    outline: none;
+    padding: px;
+    font-family: jaldi;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    margin-right: 150px;
+}
+
+#Love > img{
+
+    width: 80px;
+}
+
+#Hate{
+    border: none;
+    outline: none;
+    padding: px;
+    font-family: jaldi;
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+
+}
+
+
+#Hate > img{
+
+    width: 80px;
+
+}
+
+
+#MatchesStyle{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: black;
+    justify-content: center;
+    overflow-x: auto;
+    color: white;
+    margin-inline:
+}
+#MatchesWindow{
+    margin-inline: 30px;
+
+}
+
+#ChatsStyle{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid red;
+    color: white;
+
+}
+
+#ChatsWindow{
+    flex-direction: row;
+    justify-content: flex-start;
+    border: 3px solid green;
+}
+
+#ChatsWindow2{
+    flex-direction: row;
+    border: 3px solid blue;
+}
+
+#ProfileEditStyle{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#LogoutPage{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: black;
 }

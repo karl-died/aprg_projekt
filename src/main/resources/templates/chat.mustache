@@ -3,12 +3,19 @@
 {{>snippet/goBackLink}}
 
 {{#profile}}
-    {{#profilePictureName}}
-        <img src="../images/{{.}}" width="50">
-    {{/profilePictureName}}
-    <h1>{{name}}</h1>
-    <br/>
+    <img src="../images/{{profilePictureName}}" width="100">
+    <h1>{{name}}, {{age}}</h1>
 {{/profile}}
+
+{{#messages}}
+    {{#isIncoming}}
+        <p>{{profile.name}}: {{message}}</p>
+    {{/isIncoming}}
+    {{^isIncoming}}
+        <p>You: {{message}}</p>
+    {{/isIncoming}}
+
+{{/messages}}
 
 <div id="chat"></div>
 
