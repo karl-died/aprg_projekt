@@ -1,25 +1,34 @@
 {{>layout/header}}
 
 
-<div id="MatchesStyle">
-{{#matches}}
-   <div id="MatchesWindow">
-       <img src="../images/{{profilePictureName}}" width="50">
-       <br>
-        <a href="../chat?profileId={{id}}">{{name}}, {{age}}</a>
-    </div>
+<div id="Matches">
+    <h1>New Matches</h1>
+    <div id="MatchesStyle">
+        {{#matches}}
+           <div id="MatchesWindow">
+               <img src="../images/{{profilePictureName}}" width="50">
+               <br>
+               <a href="../chat?profileId={{id}}">{{name}}</a>
+            </div>
 
-{{/matches}}
+        {{/matches}}
+    </div>
 </div>
 <br>
 <div id="ChatsStyle">
+    <h1>Chats</h1>
     {{#chats}}
-
         <div id="ChatsWindow">
-           <div><img src="../images/{{profilePictureName}}" width="50"></div>
-            <div id="ChatsWindow2"><a href="../chat?profileId={{id}}">{{name}}, {{age}}</a>
+            <img src="../images/{{profilePictureName}}" width="50">
 
-            {{lastChatMessage.message}}
+            <div id="ChatsWindow2">
+                <a href="../chat?profileId={{id}}">{{name}}</a>
+                {{#lastChatMessage.isIncoming}}
+                    <p>{{lastChatMessage.message}}</p>
+                {{/lastChatMessage.isIncoming}}
+                {{^lastChatMessage.isIncoming}}
+                    <p>You: {{lastChatMessage.message}}</p>
+                {{/lastChatMessage.isIncoming}}
             </div>
         </div>
     {{/chats}}

@@ -76,7 +76,7 @@ public class ProfileController {
         return "editProfile";
     }
 
-    @GetMapping("/edit/empty")
+    @GetMapping("/edit_empty")
     public String editEmptyProfile(Model model, Authentication authentication) {
 
         model.addAttribute("exists", false);
@@ -125,6 +125,20 @@ public class ProfileController {
         for(int i = 0; i < chats.size(); i++){
             chats.get(i).setLastChatMessage(new ChatMessage(messages[i], (i%2 == 0), LocalDateTime.now()));
         }
+
+        model.addAttribute("chats", chats);
+
+        return "matches";
+    }
+
+    @GetMapping("/matches_empty")
+    public String showEmptyMatches(Model model, Authentication authentication) {
+
+        List<ProfileDTO>  matchedProfiles = Arrays.asList();
+
+        model.addAttribute("matches", matchedProfiles);
+
+        List<ProfileDTO>  chats = Arrays.asList();
 
         model.addAttribute("chats", chats);
 

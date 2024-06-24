@@ -7,10 +7,20 @@ body {
     align-items: center;
     flex-direction: column;
     text-align: center;
+    font-family: "Archivo";
 
 }
 
+a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
 
+@font-face {
+    font-family: "Archivo";
+    src: url("./assets/Archivo.ttf")
+}
 
 #ZunderIcon{
     margin: 30px;
@@ -74,7 +84,7 @@ input{
     border: none;
     outline: none;
     padding: 10px;
-    font-family: jaldi;
+    font-family: "Archivo";
     margin-bottom: 3px;
     border-bottom: 1px solid black;
 
@@ -127,20 +137,19 @@ input{
 #NameAge{
     font-size: 40px;
     color: white;
-    font-family: jaldi;
+    font-family: "Archivo";
     font-weight: bold;
     text-shadow: 1px 1px black;
     position: absolute;
     left: 30px;
     bottom: 50px;
-
 }
 
 #degreeCoursePosition{
     font-size: 20px;
     font-weight: bold;
     position: relative;
-    left:px;
+    left: 0px;
     text-shadow: 1px 1px black;
 }
 #BioStyle{
@@ -162,8 +171,8 @@ input{
 
 #Love{
     outline: none;
-    padding: px;
-    font-family: jaldi;
+    padding: 0px;
+    font-family: "Archivo";
     background-color: rgba(0, 0, 0, 0);
     border: none;
     margin-right: 150px;
@@ -177,8 +186,8 @@ input{
 #Hate{
     border: none;
     outline: none;
-    padding: px;
-    font-family: jaldi;
+    padding: 0px;
+    font-family: "Archivo";
     background-color: rgba(0, 0, 0, 0);
     color: white;
 
@@ -191,42 +200,74 @@ input{
 
 }
 
+#Matches{
+    text-align: left;
+    color: white;
+    width: 100%;
+    padding-left: 20px;
+}
+
 
 #MatchesStyle{
+    text-align: center;
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: black;
-    justify-content: center;
-    overflow-x: auto;
+    overflow-x: scroll;
+    position: relative;
     color: white;
-    margin-inline:
+    min-width: 100%;
 }
-#MatchesWindow{
-    margin-inline: 30px;
 
+#MatchesWindow{
+    padding-right: 20px;
+}
+
+#MatchesWindow > img{
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
 }
 
 #ChatsStyle{
     display: flex;
+    text-align: left;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 3px solid red;
     color: white;
-
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 100px;
 }
 
 #ChatsWindow{
+    display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    border: 3px solid green;
+    padding-bottom: 20px;
 }
 
-#ChatsWindow2{
-    flex-direction: row;
-    border: 3px solid blue;
+#ChatsWindow > img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
 }
+
+#ChatsWindow2 {
+    padding-left: 20px;
+    padding-top: 10px;
+}
+
+#ChatsWindow2 * {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+#ChatsWindow2 > a {
+    font-size: 30px;
+}
+
+
 
 #ProfileEditStyle{
     display: flex;
