@@ -141,6 +141,9 @@ public class ProfileController {
                     chats.add(new ProfileDTO(profile));
                 }
             }
+            chats.sort((o1, o2)
+                    -> o1.getLastChatMessage().getDateSent().compareTo(o2.getLastChatMessage().getDateSent()));
+            chats = chats.reversed();
             model.addAttribute("matches", matches);
             model.addAttribute("chats", chats);
         }
