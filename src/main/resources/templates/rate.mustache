@@ -1,9 +1,7 @@
 {{>layout/header}}
 
 
-
 {{#profiles}}
-
     <div id="ImageContainer">
       {{#imageNames}}
               <img id="RateImages" src="./images/{{.}}">
@@ -14,16 +12,21 @@
                       {{aboutMe}}</div>
               </div>
       {{/imageNames}}
-        <div id="LikeHateButtonsPosition">
+    </div>
+    <div id="LikeHateButtonsPosition">
                 <form  method="post" action="./rate?profileId={{id}}&isLike=true">
-                    <input id="Love" type="submit" value="Like">
+                    <button id="Love" type="submit" value="Like">
+                        <img src="./images/LikeButton.svg">
+                    </button>
                     {{>snippet/csrfToken}}
 
                 <form  method="post" action="./rate?profileId={{id}}&isLike=false">
-                <input id="Hate" type="submit" value="Hate">
+                <button id="Hate" type="submit">
+                    <img src="./images/HateButton.svg">
+                </button>
                 {{>snippet/csrfToken}}
-        </div>
     </div>
+
                 <br/>
             {{/profiles}}
 

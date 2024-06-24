@@ -3,17 +3,25 @@
 
 <div id="MatchesStyle">
 {{#matches}}
-    <img src="../images/{{profilePictureName}}" width="50">
-    <br>
-    <div><a href="../chat/with?profileId={{id}}">{{name}}, {{age}}</a></div>
+   <div id="MatchesWindow">
+       <img src="../images/{{profilePictureName}}" width="50">
+       <br>
+        <a href="../chat/with?profileId={{id}}">{{name}}, {{age}}</a>
+    </div>
+
 {{/matches}}
 </div>
 <br>
 <div id="ChatsStyle">
     {{#chats}}
-        <img src="../images/{{profilePictureName}}" width="50">
-        <h3><a href="../chat/with?profileId={{id}}">{{name}}, {{age}}</a></h3>
-        <p>{{lastChatMessage.message}}</p>
+
+        <div id="ChatsWindow">
+           <div><img src="../images/{{profilePictureName}}" width="50"></div>
+            <div id="ChatsWindow2"><a href="../chat/with?profileId={{id}}">{{name}}, {{age}}</a>
+
+            {{lastChatMessage.message}}
+            </div>
+        </div>
     {{/chats}}
 </div>
 {{^matches}}
