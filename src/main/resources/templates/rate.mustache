@@ -1,15 +1,19 @@
 {{>layout/header}}
 
 
+<div id="container">
 {{#profiles}}
     <div id="ImageContainer">
       {{#imageNames}}
               <img id="RateImages" src="./images/{{.}}">
-              <div id="NameAge">{{name}}, {{age}}
+              <div id="NameAge">
+                  {{name}}, {{age}}
                   <div id="degreeCoursePosition">
-                      {{degreeCourse}} {{semester}}. Semester</div>
+                      {{degreeCourse}} {{semester}}. Semester
+                  </div>
                   <div id="BioStyle">
-                      {{aboutMe}}</div>
+                      {{aboutMe}}
+                  </div>
               </div>
       {{/imageNames}}
     </div>
@@ -27,11 +31,12 @@
                 {{>snippet/csrfToken}}
     </div>
 
-                <br/>
-            {{/profiles}}
+<br/>
+{{/profiles}}
 
-            {{^profiles}}
-                <p>Looks like you've already rated everyone!</p>
-            {{/profiles}}
+{{^profiles}}
+<p>Looks like you've already rated everyone!</p>
+{{/profiles}}
+</div>
 {{>snippet/nav}}
 {{>layout/footer}}
