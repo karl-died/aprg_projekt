@@ -34,6 +34,7 @@ public class ProfileController {
                               @RequestParam(name = "pfp") MultipartFile profilePicture,
                               @RequestParam(name = "Interested In") List<String> interestedIn,
                               Authentication authentication) {
+
         profileService.save(authentication.getName(), profile);
 
         if(!image.isEmpty()) {
@@ -44,7 +45,7 @@ public class ProfileController {
             }
         }
 
-        System.out.println(profilePicture.getOriginalFilename() + ", " + profilePicture.getSize());
+
         if(!profilePicture.isEmpty()) {
             try {
                 profileService.updateProfilePicture(authentication.getName(), profilePicture);

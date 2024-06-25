@@ -60,7 +60,7 @@ public class ProfileService {
                     profile.getDegreeCourse(),
                     profile.getSemester(),
                     profile.getAboutMe(),
-                    profile.getProfilePicture()
+                    existingProifle.get().getProfilePicture()
             );
         } else {
             profileRepository.save(
