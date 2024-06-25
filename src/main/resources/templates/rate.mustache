@@ -1,6 +1,7 @@
 {{>layout/header}}
 
 
+<div id="container">
 {{#profiles}}
     <div id="ImageContainer">
       {{#imageNames}}
@@ -30,11 +31,12 @@
                 {{>snippet/csrfToken}}
     </div>
 
-                <br/>
-            {{/profiles}}
+<br/>
+{{/profiles}}
 
-            {{^profiles}}
-                <p>Looks like you've already rated everyone!</p>
-            {{/profiles}}
+{{^profiles}}
+<p>Looks like you've already rated everyone!</p>
+{{/profiles}}
+</div>
 {{>snippet/nav}}
 {{>layout/footer}}

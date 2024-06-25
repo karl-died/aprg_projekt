@@ -36,6 +36,12 @@ a {
 
 }
 
+#container{
+    max-width: 620px;
+    padding: 40px;
+    padding-top: 20px;
+}
+
 
 #loginButton {
     background-color: #369AC6;
@@ -43,7 +49,6 @@ a {
     color: white;
     padding: 15px 50px;
     text-decoration: none;
-    font-family: jaldi;
     transition-duration: 0.4s;
     font-size: 12px;
     margin: 30px;
@@ -58,7 +63,6 @@ a {
     color: white;
     padding: 15px 50px;
     text-decoration: none;
-    font-family: jaldi;
     transition-duration: 0.4s;
     font-size: 12px;
     margin: 30px;
@@ -69,7 +73,6 @@ a {
     color: white;
     padding: 15px 50px;
     text-decoration: none;
-    font-family: jaldi;
     transition-duration: 0.4s;
     text-align: center;
     border: 1px white;
@@ -114,15 +117,11 @@ input{
 }
 
 
-
-
-
-
 #ImageContainer{
     position: relative;
-    width: 450px;
+    width: 100%;
     margin-inline: auto;
-    margin-top: 25px;
+    margin-top: 30px;
     text-align: left;
 
 }
@@ -131,7 +130,6 @@ input{
     border-radius: 14px;
     height: auto;
     max-width: 100%;
-
 
 }
 #NameAge{
@@ -203,8 +201,9 @@ input{
 #Matches{
     text-align: left;
     color: white;
-    width: 100%;
-    padding-left: 20px;
+    width: auto;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
 
@@ -229,12 +228,15 @@ input{
     height: 100px;
 }
 
+
+
 #ChatsStyle{
     display: flex;
     text-align: left;
     flex-direction: column;
     color: white;
-    padding-left: 20px;
+    width: 100%;
+    padding-left: 40px;
     padding-right: 20px;
     padding-bottom: 100px;
 }
@@ -255,25 +257,60 @@ input{
 #ChatsWindow2 {
     padding-left: 20px;
     padding-top: 10px;
+    max-width: 350px;
 }
 
 #ChatsWindow2 * {
     display: flex;
     flex-direction: column;
     text-align: left;
+    max-height: 40px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 #ChatsWindow2 > a {
     font-size: 30px;
 }
 
-
-
 #ProfileEditStyle{
-    display: flex;
+    display: grid;
+    row-gap: 0px;
+    grid-template-columns: 1fr 2fr;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    padding-bottom: 100px;
+}
+
+#ProfileEditStyle > h3 {
+    text-align: left;
+    padding-right: 10px;
+    color: white;
+}
+
+#ProfileEditStyle > input{
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    font-family: "Archivo";
+}
+
+#ProfileEditStyle > #saveButton{
+    grid-column-start: 1;
+    grid-column-end: 3;
+    height: 40px;
+    background-color: #369AC6;
+    border-radius: 12px;
+    color: white;
+    padding: 15px 50px;
+    text-decoration: none;
+    transition-duration: 0.4s;
+    text-align: center;
+    border: 1px white;
+    font-size: 12px;
+
 }
 
 #LogoutPage{
@@ -282,4 +319,16 @@ input{
     justify-content: center;
     flex-direction: column;
     background-color: black;
+}
+
+
+#EditImages{
+    border-radius: 14px;
+    height: auto;
+    max-width: 100%;
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+#ProfileEditStyle > #aboutMe{
 }

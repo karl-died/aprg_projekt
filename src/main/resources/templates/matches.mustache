@@ -1,37 +1,38 @@
 {{>layout/header}}
 
+<div id="container">
+    <div id="Matches">
+        <h1>New Matches</h1>
+        <div id="MatchesStyle">
+            {{#matches}}
+               <div id="MatchesWindow">
+                   <img src="../images/{{profilePictureName}}" width="50">
+                   <br>
+                   <a href="../chat?profileId={{id}}">{{name}}</a>
+                </div>
 
-<div id="Matches">
-    <h1>New Matches</h1>
-    <div id="MatchesStyle">
-        {{#matches}}
-           <div id="MatchesWindow">
-               <img src="../images/{{profilePictureName}}" width="50">
-               <br>
-               <a href="../chat?profileId={{id}}">{{name}}</a>
-            </div>
-
-        {{/matches}}
-    </div>
-</div>
-<br>
-<div id="ChatsStyle">
-    <h1>Chats</h1>
-    {{#chats}}
-        <div id="ChatsWindow">
-            <img src="../images/{{profilePictureName}}" width="50">
-
-            <div id="ChatsWindow2">
-                <a href="../chat?profileId={{id}}">{{name}}</a>
-                {{#lastChatMessage.isIncoming}}
-                    <p>{{lastChatMessage.message}}</p>
-                {{/lastChatMessage.isIncoming}}
-                {{^lastChatMessage.isIncoming}}
-                    <p>You: {{lastChatMessage.message}}</p>
-                {{/lastChatMessage.isIncoming}}
-            </div>
+            {{/matches}}
         </div>
-    {{/chats}}
+    </div>
+    <br>
+    <div id="ChatsStyle">
+        <h1>Chats</h1>
+        {{#chats}}
+            <div id="ChatsWindow">
+                <img src="../images/{{profilePictureName}}" width="50">
+
+                <div id="ChatsWindow2">
+                    <a href="../chat?profileId={{id}}">{{name}}</a>
+                    {{#lastChatMessage.isIncoming}}
+                        <p>{{lastChatMessage.message}}</p>
+                    {{/lastChatMessage.isIncoming}}
+                    {{^lastChatMessage.isIncoming}}
+                        <p>You: {{lastChatMessage.message}}</p>
+                    {{/lastChatMessage.isIncoming}}
+                </div>
+            </div>
+        {{/chats}}
+    </div>
 </div>
 {{^matches}}
     {{^chats}}
