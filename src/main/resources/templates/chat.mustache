@@ -1,31 +1,39 @@
 {{>layout/header}}
 
-{{>snippet/goBackLink}}
 
-{{#profile}}
-    <img src="../images/{{profilePictureName}}" width="100">
-    <h1>{{name}}, {{age}}</h1>
-{{/profile}}
+<div id="container">
+    <div id="chatHeader">
+    {{>snippet/goBackLink}}
+    {{#profile}}
+        <img id="profilePicture" src="../images/{{profilePictureName}}" width="100">
+        <h1>{{name}}</h1>
+    {{/profile}}
+    </div>
 
-{{#messages}}
-    {{#isIncoming}}
-        <p>{{profile.name}}: {{message}}</p>
-    {{/isIncoming}}
-    {{^isIncoming}}
-        <p>You: {{message}}</p>
-    {{/isIncoming}}
+    <div id="chatContainer">
+    {{#messages}}
+        {{#isIncoming}}
+            <p class="incomingMessage">{{message}}</p>
+        {{/isIncoming}}
+        {{^isIncoming}}
+            <p class="outgoingMessage">{{message}}</p>
+        {{/isIncoming}}
 
-{{/messages}}
+    {{/messages}}
+    </div>
 
-<div id="chat"></div>
+    <div id="chat"></div>
 
-<iframe name="frame" style="display:none;"></iframe>
-<form method="post" action="./send?profileId={{profile.id}}" target="frame" onsubmit="resetForm(this);">
-    <input type="text" id="messageInput" name="messageInput" required autofocus>
-    {{>snippet/csrfToken}}
-    <input type="submit" value="Send">
-</form>
+    <iframe name="frame" style="display:none;"></iframe>
+    <form id="sendForm" method="post" action="./send?profileId={{profile.id}}" target="frame" onsubmit="resetForm(this);">
+        <input type="text" id="messageInput" name="messageInput" required autofocus>
+        {{>snippet/csrfToken}}
+        <input id="sendButton" type="submit" value="Send">
+    </form>
 
+</div>
+
+{{>snippet/nav}}
 <script type='text/javascript'>
     function refreshPage(){
         setTimeout(function () {
@@ -35,7 +43,7 @@
 
     function messageFromJSON(json){
         var name = "{{profile.name}}";
-        var html = "<p>" + (json['isIncoming'] ? name : "You" ) + ": " + json['message'] + "</p>";
+        var html = "<p " + (json['isIncoming'] ? 'class="incomingMessage"' : 'class="outgoingMessage"' ) + ">" + json['message'] + "</p>";
         return html;
     }
 

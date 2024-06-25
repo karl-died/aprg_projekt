@@ -47,6 +47,47 @@ public class ChatController {
         return "chat";
     }
 
+    @GetMapping("/chat_empty")
+    public String chatPageEmpty(Model model, @RequestParam(name = "profileId") UUID profileId, Authentication auth) {
+
+        List<ChatMessage> chatMessages = Arrays.asList();
+        model.addAttribute("messages", chatMessages);
+        Profile dummy = new Profile(UUID.randomUUID(), "Lara", "Meyer", LocalDate.parse("2000-01-01"), "female", "Kommunikationsdesign", 5, "Hallo ich bin Lara", "pfp1.jpeg", new String[] {});
+        model.addAttribute("profile", new ProfileDTO(dummy));
+
+        return "chat";
+    }
+
+    @GetMapping("/chat_full")
+    public String chatPageFull(Model model, @RequestParam(name = "profileId") UUID profileId, Authentication auth) {
+
+        List<ChatMessage> chatMessages = Arrays.asList(
+                new ChatMessage("Hallo!", true, LocalDateTime.now().plusMinutes(-20)),
+                new ChatMessage("Was geht?", false, LocalDateTime.now().plusMinutes(-18)),
+                new ChatMessage("Nicht viel", true, LocalDateTime.now().plusMinutes(-17)),
+                new ChatMessage("Aha cool", false, LocalDateTime.now().plusMinutes(-14)),
+                new ChatMessage("Was ist eigentlich dein Sternzeichen? Sowas finde ich nämlich mega wichtig und so, weil ich kann echt nur mit Waage und Krebs, alle anderen fucken mich nur ab. Also wenn du nicht Waage oder Krebs bist kannst du mich direkt blockieren.", true, LocalDateTime.now().plusMinutes(-12)),
+                new ChatMessage("Dann halt nicht, tschüss!", false, LocalDateTime.now().plusMinutes(-2)),
+                new ChatMessage("Hallo!", true, LocalDateTime.now().plusMinutes(-20)),
+                new ChatMessage("Was geht?", false, LocalDateTime.now().plusMinutes(-18)),
+                new ChatMessage("Nicht viel", true, LocalDateTime.now().plusMinutes(-17)),
+                new ChatMessage("Aha cool", false, LocalDateTime.now().plusMinutes(-14)),
+                new ChatMessage("Was ist eigentlich dein Sternzeichen? Sowas finde ich nämlich mega wichtig und so, weil ich kann echt nur mit Waage und Krebs, alle anderen fucken mich nur ab. Also wenn du nicht Waage oder Krebs bist kannst du mich direkt blockieren.", true, LocalDateTime.now().plusMinutes(-12)),
+                new ChatMessage("Dann halt nicht, tschüss!", false, LocalDateTime.now().plusMinutes(-2)),
+                new ChatMessage("Hallo!", true, LocalDateTime.now().plusMinutes(-20)),
+                new ChatMessage("Was geht?", false, LocalDateTime.now().plusMinutes(-18)),
+                new ChatMessage("Nicht viel", true, LocalDateTime.now().plusMinutes(-17)),
+                new ChatMessage("Aha cool", false, LocalDateTime.now().plusMinutes(-14)),
+                new ChatMessage("Was ist eigentlich dein Sternzeichen? Sowas finde ich nämlich mega wichtig und so, weil ich kann echt nur mit Waage und Krebs, alle anderen fucken mich nur ab. Also wenn du nicht Waage oder Krebs bist kannst du mich direkt blockieren.", true, LocalDateTime.now().plusMinutes(-12)),
+                new ChatMessage("Dann halt nicht, tschüss!", false, LocalDateTime.now().plusMinutes(-2))
+        );
+        model.addAttribute("messages", chatMessages);
+        Profile dummy = new Profile(UUID.randomUUID(), "Lara", "Meyer", LocalDate.parse("2000-01-01"), "female", "Kommunikationsdesign", 5, "Hallo ich bin Lara", "pfp1.jpeg", new String[] {});
+        model.addAttribute("profile", new ProfileDTO(dummy));
+
+        return "chat";
+    }
+
     @GetMapping("/messages")
     public @ResponseBody List<String> getMessages(@RequestParam(name = "profileId") UUID profileId, Authentication  auth) {
         List<String> messageStrings = new ArrayList<>();
